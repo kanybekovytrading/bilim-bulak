@@ -1,17 +1,17 @@
 import "./globals.css";
 import { ReactNode } from "react";
-import { Rubik } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { METADATA } from "@/shared/utils/constants";
 
-const rubik = Rubik({
+const rubik = Montserrat({
   subsets: ["latin", "cyrillic"],
   weight: ["300", "400", "500", "600", "700", "800", "900"],
   display: "swap",
-  variable: "--font-rubik",
+  variable: "--font-montserrat",
 });
 
 export const metadata = METADATA;
