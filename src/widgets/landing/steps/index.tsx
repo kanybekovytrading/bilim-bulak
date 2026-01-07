@@ -8,14 +8,14 @@ export const Steps = () => {
   return (
     <section className="max-w-400 m-auto px-5 my-14 md:my-20">
       <h1 className="text-center font-bold text-3xl md:text-5xl">
-        Тесттен өтүү үчүн <br />
-        <span className="text-blue-700">4 жөнөкөй кадам</span>
+        {t("steps.heading.1")} <br />
+        <span className="text-blue-700">{t("steps.heading.2")}</span>
       </h1>
 
       <div className="mt-14 flex flex-col md:flex-row md:flex-wrap lg:flex-nowrap md:items-stretch gap-8 relative before:content-[''] before:absolute before:inset-0 before:-z-10 before:rounded-2xl before:bg-indigo-100 before:blur-2xl before:opacity-80">
-        {STEPS.map(({ icon, title, description }, i) => (
+        {STEPS.map(({ icon, titleKey, description }, i) => (
           <div
-            key={i}
+            key={titleKey}
             className="flex flex-col gap-5 bg-white rounded-3xl p-4 md:p-6 md:basis-[calc(50%-1rem)] lg:basis-0 lg:flex-1"
           >
             <div className="flex items-center justify-between">
@@ -26,18 +26,18 @@ export const Steps = () => {
               <Image
                 className="w-12 h-12 md:w-16 md:h-16"
                 src={icon}
-                alt={title}
+                alt={t(titleKey)}
                 width={64}
                 height={64}
               />
             </div>
 
-            <h6 className="text-xl md:text-2xl font-semibold">{title}</h6>
+            <h6 className="text-xl md:text-2xl font-semibold">{t(titleKey)}</h6>
 
             <p className="font-medium text-sm md:text-lg text-neutral-500">
-              {description.map(({ className, text }, index) => (
-                <span key={index} className={className}>
-                  {t(text)}
+              {description.map(({ key, className }, idx) => (
+                <span key={key + idx} className={className}>
+                  {t(key)}
                 </span>
               ))}
             </p>

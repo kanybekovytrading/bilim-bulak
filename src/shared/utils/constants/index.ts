@@ -70,40 +70,38 @@ export const LANGUAGES = [
 
 export const STEPS = [
   {
-    title: "Катталуу",
+    titleKey: "steps.1.title",
     description: [
-      { text: "Телефон номериңиз аркылуу " },
-      { text: "катталып", className: "text-blue-700" },
-      { text: ", иштеген мекемеңизди (мектеп же бала бакча) тандайсыз." },
+      { key: "steps.1.desc.1" },
+      { key: "steps.1.desc.2", className: "text-blue-700" },
+      { key: "steps.1.desc.3" },
     ],
     icon: "/icons/first-step.svg",
   },
   {
-    title: "Тест тапшыруу",
+    titleKey: "steps.2.title",
     description: [
-      {
-        text: "Өзүңүздүн эмоционалдык абалыңызды аныктоо үчүн атайын даярдалган ",
-      },
-      { text: "суроолорго жооп", className: "text-green-600" },
-      { text: " бересиз." },
+      { key: "steps.2.desc.1" },
+      { key: "steps.2.desc.2", className: "text-green-600" },
+      { key: "steps.2.desc.3" },
     ],
     icon: "/icons/second-step.svg",
   },
   {
-    title: "Жыйынтык алуу",
+    titleKey: "steps.3.title",
     description: [
-      { text: "Система жоопторуңузду автоматтык түрдө эсептеп, " },
-      { text: "жыйынтыгын", className: "text-amber-500" },
-      { text: " көрсөтөт." },
+      { key: "steps.3.desc.1" },
+      { key: "steps.3.desc.2", className: "text-amber-500" },
+      { key: "steps.3.desc.3" },
     ],
     icon: "/icons/third-step.svg",
   },
   {
-    title: "Жеке сунуштама",
+    titleKey: "steps.4.title",
     description: [
-      { text: "Сиздин жыйынтыгыңызга жараша пайдалуу " },
-      { text: "видео", className: "text-red-500" },
-      { text: " курстар жана сунуштар ачылат." },
+      { key: "steps.4.desc.1" },
+      { key: "steps.4.desc.2", className: "text-red-500" },
+      { key: "steps.4.desc.3" },
     ],
     icon: "/icons/fourth-step.svg",
   },
