@@ -9,11 +9,11 @@ export const Steps = () => {
         <span className="text-blue-700">4 жөнөкөй кадам</span>
       </h1>
 
-      <div className="mt-14 flex flex-col md:flex-row items-center gap-8 relative before:content-[''] before:absolute before:inset-0 before:-z-10 before:rounded-2xl before:bg-indigo-100 before:blur-2xl before:opacity-80">
+      <div className="mt-14 flex flex-col md:flex-row md:flex-wrap lg:flex-nowrap md:items-stretch gap-8 relative before:content-[''] before:absolute before:inset-0 before:-z-10 before:rounded-2xl before:bg-indigo-100 before:blur-2xl before:opacity-80">
         {STEPS.map(({ icon, title, description }, i) => (
           <div
             key={i}
-            className="p-4 md:p-6 bg-white rounded-3xl flex flex-col gap-5"
+            className="flex flex-col gap-5 bg-white rounded-3xl p-4 md:p-6 md:basis-[calc(50%-1rem)] lg:basis-0 lg:flex-1"
           >
             <div className="flex items-center justify-between">
               <p className="w-12 h-12 rounded-full font-bold bg-blue-700 text-white flex items-center justify-center">
@@ -21,11 +21,11 @@ export const Steps = () => {
               </p>
 
               <Image
-                className="w-12 h-12 md:w-15 md:h-15"
+                className="w-12 h-12 md:w-16 md:h-16"
                 src={icon}
                 alt={title}
-                width={60}
-                height={60}
+                width={64}
+                height={64}
               />
             </div>
 
@@ -34,6 +34,8 @@ export const Steps = () => {
             <p className="font-medium text-sm md:text-lg text-neutral-500">
               {description}
             </p>
+
+            <div className="mt-auto" />
           </div>
         ))}
       </div>
