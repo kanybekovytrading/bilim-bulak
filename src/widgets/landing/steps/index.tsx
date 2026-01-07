@@ -1,7 +1,10 @@
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { STEPS } from "@/shared/utils/constants";
 
 export const Steps = () => {
+  const t = useTranslations();
+
   return (
     <section className="max-w-400 m-auto px-5 my-14 md:my-20">
       <h1 className="text-center font-bold text-3xl md:text-5xl">
@@ -32,9 +35,9 @@ export const Steps = () => {
             <h6 className="text-xl md:text-2xl font-semibold">{title}</h6>
 
             <p className="font-medium text-sm md:text-lg text-neutral-500">
-              {description.map((part, idx) => (
-                <span key={idx} className={part.className}>
-                  {part.text}
+              {description.map(({ className, text }, index) => (
+                <span key={index} className={className}>
+                  {t(text)}
                 </span>
               ))}
             </p>
