@@ -24,7 +24,7 @@ export const LangSwitcher = () => {
     <button
       type="button"
       onClick={onToggle}
-      className="inline-flex items-center gap-2 cursor-pointer py-3 px-4 md:py-4 md:px-5 rounded-xl bg-zinc-100 text-neutral-500 text-sm md:text-xl font-medium"
+      className="flex items-center gap-2 cursor-pointer py-3 px-4 md:py-4 md:px-5 rounded-xl bg-zinc-100 text-neutral-500 text-sm md:text-xl font-medium"
     >
       <Image src={current.icon} alt={current.label} width={22} height={22} />
 

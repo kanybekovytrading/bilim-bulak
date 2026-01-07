@@ -8,7 +8,7 @@ export const Header = () => {
 
   return (
     <header className="w-full sticky top-0 bg-white z-50">
-      <div className="max-w-400 m-auto p-5 flex justify-between items-center">
+      <div className="max-w-400 m-auto py-3 px-4 md:p-5 flex justify-between items-center">
         <Logo />
 
         <div className="flex items-center gap-4">
