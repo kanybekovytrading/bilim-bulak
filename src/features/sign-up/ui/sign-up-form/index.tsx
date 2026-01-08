@@ -1,8 +1,9 @@
 "use client";
+import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, Label, TextField } from "@heroui/react";
+import { Button, Checkbox, Form, Label, TextField, cn } from "@heroui/react";
 import { SignUpFirstStepFormValues } from "@/entities/sign-up/model/types";
 import { SignUpFirstStepSchema } from "@/entities/sign-up/model/schemas";
 import { PhoneInputField } from "@/shared/ui/phone-input-field";
@@ -16,7 +17,8 @@ export const SignUpForm = () => {
     register,
     handleSubmit,
     control,
-    formState: { errors, isSubmitting },
+    watch,
+    formState: { errors, isSubmitting, isValid },
   } = useForm<SignUpFirstStepFormValues>({
     resolver: zodResolver(SignUpFirstStepSchema),
     defaultValues: {
@@ -24,9 +26,13 @@ export const SignUpForm = () => {
       phone: "996",
       password: "",
       confirmPassword: "",
+      termsAccepted: false,
     },
-    mode: "onBlur",
+    mode: "onChange",
   });
+
+  const termsAccepted = watch("termsAccepted");
+  const isContinueDisabled = isSubmitting || !termsAccepted || !isValid;
 
   const onSubmit = async (values: SignUpFirstStepFormValues) => {
     console.log(values);
@@ -43,7 +49,7 @@ export const SignUpForm = () => {
       </p>
 
       <Form
-        className="mt-8 lg:mt-10 w-full flex flex-col gap-4 md:gap-5"
+        className="mt-8 lg:mt-10 w-full flex flex-col gap-4 lg:gap-5"
         onSubmit={handleSubmit(onSubmit)}
       >
         <TextInputField
@@ -111,9 +117,55 @@ export const SignUpForm = () => {
           }}
         />
 
-        <button type="submit" disabled={isSubmitting}>
-          Submit
-        </button>
+        <Controller
+          name="termsAccepted"
+          control={control}
+          render={({ field }) => (
+            <div className="flex items-start gap-2.5">
+              <Checkbox
+                id="sign-up"
+                className="mt-0.5"
+                isSelected={!!field.value}
+                onChange={(selected: boolean) => field.onChange(selected)}
+                onBlur={field.onBlur}
+              >
+                <Checkbox.Control className="bg-neutral-200">
+                  <Checkbox.Indicator />
+                </Checkbox.Control>
+              </Checkbox>
+
+              <p className="text-xs lg:text-sm text-neutral-500 font-medium">
+                {t("signUpForm.termsText")} <br />
+                <Link href="/" className="text-blue-700">
+                  {t("signUpForm.userAgreement")}
+                </Link>{" "}
+                {t("signUpForm.and")}{" "}
+                <Link href="/" className="text-blue-700">
+                  {t("signUpForm.privacyPolicy")}
+                </Link>
+              </p>
+            </div>
+          )}
+        />
+
+        {errors.termsAccepted?.message && (
+          <p className="text-xs lg:text-sm text-red-500 -mt-2">
+            {t(errors.termsAccepted.message)}
+          </p>
+        )}
+
+        <Button
+          type="submit"
+          isDisabled={isContinueDisabled}
+          className={cn(
+            "w-full h-fit rounded-xl font-medium text-sm lg:text-xl py-3 lg:py-4.5",
+            isContinueDisabled
+              ? "bg-[#EEEEEE] text-[#A9A9A9]"
+              : "bg-blue-700 text-white"
+          )}
+        >
+          {t("signUpForm.continue")}
+        </Button>
       </Form>
     </div>
   );

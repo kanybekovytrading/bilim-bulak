@@ -74,7 +74,12 @@
     "fullNamePlaceholder": "Иванов Иван Иванович",
     "phoneLabel": "Номер телефона",
     "passwordLabel": "Создайте пароль",
-    "confirmPasswordLabel": "Подтвердите пароль"
+    "confirmPasswordLabel": "Подтвердите пароль",
+    "termsText": "Регистрируясь, вы соглашаетесь с условиями",
+    "userAgreement": "Пользовательского соглашения",
+    "and": "и",
+    "privacyPolicy": "Политикой конфиденциальности",
+    "continue": "Продолжить"
   },
   "validation": {
     "fullNameMin": "Введите имя (минимум 2 символа)",
@@ -82,6 +87,7 @@
     "phoneKg": "Номер должен начинаться с 996 и содержать 9 цифр",
     "passwordMin": "Пароль должен быть минимум 6 символов",
     "passwordMax": "Пароль слишком длинный",
-    "passwordsDontMatch": "Пароли не совпадают"
+    "passwordsDontMatch": "Пароли не совпадают",
+    "termsRequired": "Чтобы продолжить, примите условия"
   }
 }

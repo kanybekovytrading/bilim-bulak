@@ -74,7 +74,12 @@
     "fullNamePlaceholder": "Асанов Үсөн Эсенович",
     "phoneLabel": "Телефон номериңиз",
     "passwordLabel": "Сыр сөз түзүңүз",
-    "confirmPasswordLabel": "Сыр сөздү ырастаңыз"
+    "confirmPasswordLabel": "Сыр сөздү ырастаңыз",
+    "termsText": "Катталуу менен сиз жобонун шарттарына макул болосуз",
+    "userAgreement": "Колдонуучу келишими",
+    "and": "жана",
+    "privacyPolicy": "Купуялык саясаты",
+    "continue": "Улантуу"
   },
   "validation": {
     "fullNameMin": "Атыңызды толтуруңуз (минимум 2 тамга)",
@@ -82,6 +87,7 @@
     "phoneKg": "Номер 996 менен башталып жана 9 цифра болушу керек",
     "passwordMin": "Сыр сөз минимум 6 белгиден турушу керек",
     "passwordMax": "Сыр сөз өтө узун",
-    "passwordsDontMatch": "Сыр сөздөр дал келбейт"
+    "passwordsDontMatch": "Сыр сөздөр дал келбейт",
+    "termsRequired": "Улантуу үчүн шарттарга макул болуңуз"
   }
 }
