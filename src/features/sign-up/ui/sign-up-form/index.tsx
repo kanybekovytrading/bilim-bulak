@@ -16,7 +16,7 @@ export const SignUpForm = () => {
     resolver: zodResolver(SignUpFirstStepSchema),
     defaultValues: {
       fullName: "",
-      phone: "+996",
+      phone: "996",
     },
     mode: "onBlur",
   });

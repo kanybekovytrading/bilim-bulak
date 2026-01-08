@@ -106,3 +106,7 @@ export const STEPS = [
     icon: "/icons/fourth-step.svg",
   },
 ];
+
+export const KG_PREFIX = "996";
+export const KG_LOCAL_LEN = 9;
+export const KG_TOTAL_LEN = KG_PREFIX.length + KG_LOCAL_LEN;

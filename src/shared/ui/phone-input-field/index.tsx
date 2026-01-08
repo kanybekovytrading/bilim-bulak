@@ -16,6 +16,16 @@ interface Props {
 
 const KG_PREFIX = "996";
 
+const formatKgPhoneDigits = (raw: string | number) => {
+  let digits = String(raw || "").replace(/\D/g, "");
+
+  if (!digits.startsWith(KG_PREFIX)) digits = KG_PREFIX + digits;
+
+  const tail = digits.slice(KG_PREFIX.length).slice(0, 9);
+
+  return KG_PREFIX + tail;
+};
+
 export const PhoneInputField = ({
   value,
   onChange,
@@ -25,7 +35,7 @@ export const PhoneInputField = ({
   className,
   error = false,
 }: Props) => {
-  const libValue = (value || "+996").replace(/^\+/, "").replace(/\D/g, "");
+  const libValue = String(value || KG_PREFIX).replace(/\D/g, "");
 
   return (
     <div
@@ -47,20 +57,9 @@ export const PhoneInputField = ({
         value={libValue}
         placeholder={placeholder}
         disabled={disabled}
-        inputProps={{
-          inputMode: "tel",
-          autoComplete: "tel",
-        }}
+        inputProps={{ inputMode: "tel", autoComplete: "tel" }}
         onBlur={onBlur}
-        onChange={(raw) => {
-          let digits = String(raw || "").replace(/\D/g, "");
-
-          if (!digits.startsWith(KG_PREFIX)) digits = KG_PREFIX + digits;
-
-          const tail = digits.slice(KG_PREFIX.length).slice(0, 9);
-
-          onChange("+" + KG_PREFIX + tail);
-        }}
+        onChange={(raw) => onChange(formatKgPhoneDigits(raw))}
       />
     </div>
   );
