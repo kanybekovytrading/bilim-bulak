@@ -1,9 +1,11 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Checkbox, Form, Label, TextField, cn } from "@heroui/react";
+import { useSignUpStore } from "@/entities/sign-up/model/store";
 import { SignUpFirstStepFormValues } from "@/entities/sign-up/model/types";
 import { SignUpFirstStepSchema } from "@/entities/sign-up/model/schemas";
 import { PhoneInputField } from "@/shared/ui/phone-input-field";
@@ -11,6 +13,10 @@ import { TextInputField } from "@/shared/ui/text-input-field";
 import { PasswordInputField } from "@/shared/ui/password-input-field";
 
 export const SignUpForm = () => {
+  const setFirstStep = useSignUpStore((s) => s.setFirstStep);
+
+  const router = useRouter();
+
   const t = useTranslations();
 
   const {
@@ -35,7 +41,13 @@ export const SignUpForm = () => {
   const isContinueDisabled = isSubmitting || !termsAccepted || !isValid;
 
   const onSubmit = async (values: SignUpFirstStepFormValues) => {
-    console.log(values);
+    setFirstStep({
+      fullName: values.fullName,
+      phone: values.phone,
+      password: values.password,
+    });
+
+    router.push("/sign-up/work");
   };
 
   return (

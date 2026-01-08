@@ -10,7 +10,7 @@ export const Intro = () => {
 
   const t = useTranslations();
 
-  const navigateToSignUp = () => router.push("/sign-up");
+  const navigateToSignUp = () => router.push("/auth/sign-up");
 
   return (
     <section className="max-w-400 m-auto px-4 md:px-5 flex flex-col items-center justify-center mt-8 md:mt-20">

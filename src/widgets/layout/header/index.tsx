@@ -9,7 +9,7 @@ export const Header = () => {
 
   const router = useRouter();
 
-  const navigateToSignUp = () => router.push(`/sign-up`);
+  const navigateToSignUp = () => router.push(`/auth/sign-up`);
 
   return (
     <header className="w-full sticky top-0 bg-white z-50">
