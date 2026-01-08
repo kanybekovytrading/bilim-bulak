@@ -11,7 +11,7 @@ import { PhoneInputField } from "@/shared/ui/phone-input-field";
 import { TextInputField } from "@/shared/ui/text-input-field";
 import { PasswordInputField } from "@/shared/ui/password-input-field";
 import { TermsAcceptedField } from "@/shared/ui/terms-accepted-field";
-import { BeforeUnloadGuard } from "@/shared/ui/before-unload-guard";
+import { useBeforeUnload } from "@/shared/lib/hooks/useBeforeUnload";
 
 export const SignUpForm = () => {
   const setFirstStep = useSignUpStore((s) => s.setFirstStep);
@@ -37,6 +37,8 @@ export const SignUpForm = () => {
     mode: "onChange",
   });
 
+  useBeforeUnload({ enabled: isDirty });
+
   const termsAccepted = useWatch({ control, name: "termsAccepted" });
   const isContinueDisabled = isSubmitting || !termsAccepted || !isValid;
 
@@ -52,8 +54,6 @@ export const SignUpForm = () => {
 
   return (
     <>
-      <BeforeUnloadGuard enabled={isDirty} />
-
       <div className="flex flex-col items-center lg:min-w-118">
         <h1 className="text-3xl lg:text-4xl font-semibold">
           {t("signUpForm.title")}

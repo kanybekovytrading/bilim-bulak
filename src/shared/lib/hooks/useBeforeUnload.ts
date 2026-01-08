@@ -1,11 +1,11 @@
 "use client";
 import { useEffect } from "react";
 
-interface Props {
+interface Options {
   enabled: boolean;
 }
 
-export const BeforeUnloadGuard = ({ enabled }: Props) => {
+export const useBeforeUnload = ({ enabled }: Options) => {
   useEffect(() => {
     if (!enabled) return;
 
@@ -15,9 +15,6 @@ export const BeforeUnloadGuard = ({ enabled }: Props) => {
     };
 
     window.addEventListener("beforeunload", handler);
-
     return () => window.removeEventListener("beforeunload", handler);
   }, [enabled]);
-
-  return null;
 };
