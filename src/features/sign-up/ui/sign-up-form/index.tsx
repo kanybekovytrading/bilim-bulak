@@ -1,20 +1,17 @@
 "use client";
-import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, InputGroup, Label, TextField } from "@heroui/react";
-import { Eye, EyeOff } from "lucide-react";
-
+import { Form, Label, TextField } from "@heroui/react";
 import { SignUpFirstStepFormValues } from "@/entities/sign-up/model/types";
 import { SignUpFirstStepSchema } from "@/entities/sign-up/model/schemas";
 import { PhoneInputField } from "@/shared/ui/phone-input-field";
+import { TextInputField } from "@/shared/ui/text-input-field";
+import { PasswordInputField } from "@/shared/ui/password-input-field";
 
 export const SignUpForm = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
   const t = useTranslations();
+
   const {
     register,
     handleSubmit,
@@ -49,24 +46,18 @@ export const SignUpForm = () => {
         className="mt-8 lg:mt-10 w-full flex flex-col gap-4 md:gap-5"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <TextField name="fullName">
-          <Label className="w-fit text-sm lg:text-base text-neutral-500 font-medium ml-2">
-            {t("signUpForm.fullNameLabel")}
-          </Label>
-
-          <InputGroup.Input
-            {...register("fullName")}
-            autoComplete="name"
-            className="placeholder:text-[#A9A9A9] focus:border-blue-700 py-3.5 px-4 font-medium text-sm lg:text-xl bg-[#F5F5F5] rounded-lg"
-            placeholder={t("signUpForm.fullNamePlaceholder")}
-          />
-
-          {errors.fullName?.message && (
-            <p className="text-xs lg:text-sm text-red-500 mt-1 ml-2">
-              {t(errors.fullName.message)}
-            </p>
-          )}
-        </TextField>
+        <TextInputField
+          name="fullName"
+          label={t("signUpForm.fullNameLabel")}
+          errorMessage={
+            errors.fullName?.message ? t(errors.fullName.message) : undefined
+          }
+          inputProps={{
+            ...register("fullName"),
+            autoComplete: "name",
+            placeholder: t("signUpForm.fullNamePlaceholder"),
+          }}
+        />
 
         <TextField name="phone">
           <Label className="w-fit text-sm lg:text-base text-neutral-500 font-medium ml-2">
@@ -94,75 +85,31 @@ export const SignUpForm = () => {
           )}
         </TextField>
 
-        <TextField name="password">
-          <Label className="w-fit text-sm lg:text-base text-neutral-500 font-medium ml-2">
-            {t("signUpForm.passwordLabel")}
-          </Label>
+        <PasswordInputField
+          name="password"
+          label={t("signUpForm.passwordLabel")}
+          errorMessage={
+            errors.password?.message ? t(errors.password.message) : undefined
+          }
+          inputProps={{
+            ...register("password"),
+            autoComplete: "new-password",
+          }}
+        />
 
-          <div className="relative">
-            <InputGroup.Input
-              {...register("password")}
-              type={showPassword ? "text" : "password"}
-              autoComplete="new-password"
-              placeholder="••••••••"
-              className="placeholder:text-[#A9A9A9] w-full focus:border-blue-700 py-3.5 px-4 pr-12 font-medium text-sm lg:text-xl bg-[#F5F5F5] rounded-lg"
-            />
-
-            <button
-              type="button"
-              onClick={() => setShowPassword((v) => !v)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-700"
-              tabIndex={-1}
-            >
-              {showPassword ? (
-                <Eye className="w-5 h-5" />
-              ) : (
-                <EyeOff className="w-5 h-5" />
-              )}
-            </button>
-          </div>
-
-          {errors.password?.message && (
-            <p className="text-xs lg:text-sm text-red-500 mt-1 ml-2">
-              {t(errors.password.message)}
-            </p>
-          )}
-        </TextField>
-
-        <TextField name="confirmPassword">
-          <Label className="w-fit text-sm lg:text-base text-neutral-500 font-medium ml-2">
-            {t("signUpForm.confirmPasswordLabel")}
-          </Label>
-
-          <div className="relative">
-            <InputGroup.Input
-              {...register("confirmPassword")}
-              type={showConfirmPassword ? "text" : "password"}
-              autoComplete="new-password"
-              placeholder="••••••••"
-              className="placeholder:text-[#A9A9A9] w-full focus:border-blue-700 py-3.5 px-4 pr-12 font-medium text-sm lg:text-xl bg-[#F5F5F5] rounded-lg"
-            />
-
-            <button
-              type="button"
-              onClick={() => setShowConfirmPassword((v) => !v)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-700"
-              tabIndex={-1}
-            >
-              {showConfirmPassword ? (
-                <Eye className="w-5 h-5" />
-              ) : (
-                <EyeOff className="w-5 h-5" />
-              )}
-            </button>
-          </div>
-
-          {errors.confirmPassword?.message && (
-            <p className="text-xs lg:text-sm text-red-500 mt-1 ml-2">
-              {t(errors.confirmPassword.message)}
-            </p>
-          )}
-        </TextField>
+        <PasswordInputField
+          name="confirmPassword"
+          label={t("signUpForm.confirmPasswordLabel")}
+          errorMessage={
+            errors.confirmPassword?.message
+              ? t(errors.confirmPassword.message)
+              : undefined
+          }
+          inputProps={{
+            ...register("confirmPassword"),
+            autoComplete: "new-password",
+          }}
+        />
 
         <button type="submit" disabled={isSubmitting}>
           Submit
