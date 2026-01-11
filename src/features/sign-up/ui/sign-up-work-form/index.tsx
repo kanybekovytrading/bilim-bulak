@@ -275,9 +275,9 @@ export const SignUpWorkForm = () => {
         />
 
         {registerM.isError && (
-          <div className="mt-1 ml-2 flex items-center gap-2">
+          <div className="ml-2 flex items-center gap-2">
             <p className="text-xs lg:text-sm text-red-500">
-              {t("common.loadError")}
+              {t("common.requestError")}
             </p>
 
             <Button
@@ -285,7 +285,7 @@ export const SignUpWorkForm = () => {
               onClick={() => registerM.reset()}
               variant="ghost"
               size="sm"
-              className="px-0 min-w-0 h-auto text-blue-700 hover:bg-inherit"
+              className="px-0 min-w-0 h-auto text-xs lg:text-sm text-blue-700 hover:bg-inherit"
             >
               {t("common.retry")}
             </Button>
