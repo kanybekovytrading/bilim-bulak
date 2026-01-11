@@ -1,17 +1,24 @@
 import { z } from "zod";
-import { SignUpFirstStepSchema } from "../schemas";
+import { SignUpSchema, SignUpWorkSchema } from "../schemas";
 
-export type SignUpFirstStepFormValues = z.infer<typeof SignUpFirstStepSchema>;
+export type SignUpFormValues = z.infer<typeof SignUpSchema>;
+export type SignUpWorkFormValues = z.infer<typeof SignUpWorkSchema>;
 
-export type SignUpFirstStepData = {
+export interface SignUpFirstStepData {
   fullName: string;
   phone: string;
   password: string;
-};
+}
 
-export type SignUpSecondStepData = {
+export interface SignUpSecondStepData {
   region?: string;
   district?: string;
   organizationType?: "school" | "kindergarten";
   organizationName?: string;
-};
+}
+
+export interface Region {
+  id: number;
+  nameKg: string;
+  nameRu: string;
+}

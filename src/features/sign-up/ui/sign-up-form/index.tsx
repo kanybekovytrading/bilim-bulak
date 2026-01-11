@@ -5,8 +5,8 @@ import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Form, Label, TextField, cn } from "@heroui/react";
 import { useSignUpStore } from "@/entities/sign-up/model/store";
-import { SignUpFirstStepFormValues } from "@/entities/sign-up/model/types";
-import { SignUpFirstStepSchema } from "@/entities/sign-up/model/schemas";
+import { SignUpFormValues } from "@/entities/sign-up/model/types";
+import { SignUpSchema } from "@/entities/sign-up/model/schemas";
 import { PhoneInputField } from "@/shared/ui/phone-input-field";
 import { TextInputField } from "@/shared/ui/text-input-field";
 import { PasswordInputField } from "@/shared/ui/password-input-field";
@@ -25,8 +25,8 @@ export const SignUpForm = () => {
     handleSubmit,
     control,
     formState: { errors, isSubmitting, isValid, isDirty },
-  } = useForm<SignUpFirstStepFormValues>({
-    resolver: zodResolver(SignUpFirstStepSchema),
+  } = useForm<SignUpFormValues>({
+    resolver: zodResolver(SignUpSchema),
     defaultValues: {
       fullName: "",
       phone: "996",
@@ -42,7 +42,7 @@ export const SignUpForm = () => {
   const termsAccepted = useWatch({ control, name: "termsAccepted" });
   const isContinueDisabled = isSubmitting || !termsAccepted || !isValid;
 
-  const onSubmit = async (values: SignUpFirstStepFormValues) => {
+  const onSubmit = async (values: SignUpFormValues) => {
     setFirstStep({
       fullName: values.fullName,
       phone: values.phone,

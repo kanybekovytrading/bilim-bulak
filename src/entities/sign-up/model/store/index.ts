@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { SignUpFirstStepData, SignUpSecondStepData } from "../types";
 
-type SignUpStore = {
+interface SignUpStore {
   firstStep: SignUpFirstStepData | null;
   secondStep: SignUpSecondStepData | null;
 
@@ -9,7 +9,7 @@ type SignUpStore = {
   setSecondStep: (data: SignUpSecondStepData) => void;
 
   reset: () => void;
-};
+}
 
 export const useSignUpStore = create<SignUpStore>((set) => ({
   firstStep: null,

@@ -1,75 +1,80 @@
 "use client";
-import { useLocale } from "next-intl";
-import { Label, ListBox, Select } from "@heroui/react";
+import { Label, ListBox, Select, cn } from "@heroui/react";
+import type { Key } from "@heroui/react";
+import type { Region } from "@/entities/sign-up/model/types";
 
-type Locale = "kg" | "ru";
-
-export type LocalizedOption = {
-  id: number;
-  nameKg: string;
-  nameRu: string;
-};
-
-type Props = {
-  label?: string;
+interface Props {
+  label: string;
   placeholder?: string;
+  options: Region[];
+  locale: string;
   value: number | null;
   onChange: (value: number | null) => void;
-  options: LocalizedOption[];
-  disabled?: boolean;
+  isDisabled?: boolean;
+  isInvalid?: boolean;
+  errorMessage?: string;
   className?: string;
-};
+}
 
-const getOptionLabel = (opt: LocalizedOption, locale: Locale) => {
-  return locale === "ru" ? opt.nameRu : opt.nameKg;
+const toSelectValue = (id: number | null) => (id === null ? null : String(id));
+
+const toNumberOrNull = (key: Key | null) => {
+  if (key === null) return null;
+  const n = Number(key);
+  return Number.isFinite(n) ? n : null;
 };
 
 export const SelectField = ({
   label,
-  placeholder = "Select",
+  placeholder,
+  options,
+  locale,
   value,
   onChange,
-  options,
-  disabled = false,
+  isDisabled,
+  isInvalid,
+  errorMessage,
   className,
 }: Props) => {
-  const locale = (useLocale() as Locale) ?? "kg";
-
-  const selectedKey = value == null ? undefined : String(value);
+  const getLabel = (o: Region) => (locale === "ru" ? o.nameRu : o.nameKg);
 
   return (
-    <Select
-      className={className}
-      placeholder={placeholder}
-      isDisabled={disabled}
-      selectedKey={selectedKey}
-      onSelectionChange={(key) => {
-        if (!key) return onChange(null);
-        const id = Number(key);
-        onChange(Number.isFinite(id) ? id : null);
-      }}
-    >
-      {label && <Label>{label}</Label>}
+    <div className={cn("flex flex-col gap-1", className)}>
+      <Select
+        placeholder={placeholder}
+        isDisabled={isDisabled}
+        isInvalid={isInvalid}
+        fullWidth
+        value={toSelectValue(value)}
+        onChange={(next) => onChange(toNumberOrNull(next))}
+      >
+        <Label>{label}</Label>
 
-      <Select.Trigger>
-        <Select.Value />
-        <Select.Indicator />
-      </Select.Trigger>
+        <Select.Trigger>
+          <Select.Value />
+          <Select.Indicator />
+        </Select.Trigger>
 
-      <Select.Popover>
-        <ListBox>
-          {options.map((opt) => (
-            <ListBox.Item
-              key={String(opt.id)}
-              id={String(opt.id)}
-              textValue={getOptionLabel(opt, locale)}
-            >
-              {getOptionLabel(opt, locale)}
-              <ListBox.ItemIndicator />
-            </ListBox.Item>
-          ))}
-        </ListBox>
-      </Select.Popover>
-    </Select>
+        <Select.Popover>
+          <ListBox>
+            {options.map((o) => {
+              const text = getLabel(o);
+              const id = String(o.id);
+
+              return (
+                <ListBox.Item key={id} id={id} textValue={text}>
+                  {text}
+                  <ListBox.ItemIndicator />
+                </ListBox.Item>
+              );
+            })}
+          </ListBox>
+        </Select.Popover>
+      </Select>
+
+      {errorMessage && (
+        <p className="text-xs lg:text-sm text-red-500">{errorMessage}</p>
+      )}
+    </div>
   );
 };

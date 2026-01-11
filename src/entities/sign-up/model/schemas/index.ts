@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const SignUpFirstStepSchema = z
+export const SignUpSchema = z
   .object({
     fullName: z
       .string()
@@ -28,4 +28,18 @@ export const SignUpFirstStepSchema = z
   .refine((data) => data.password === data.confirmPassword, {
     message: "validation.passwordsDontMatch",
     path: ["confirmPassword"],
+  });
+
+export const SignUpWorkSchema = z
+  .object({
+    regionId: z.number().int().positive().nullable(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.regionId === null) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "validation.regionRequired",
+        path: ["regionId"],
+      });
+    }
   });
