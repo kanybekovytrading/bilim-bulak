@@ -3,12 +3,10 @@ import { useEffect } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Form } from "@heroui/react";
-
+import { Button, Form, cn } from "@heroui/react";
 import { useSignUpStore } from "@/entities/sign-up/model/store";
 import { SignUpWorkSchema } from "@/entities/sign-up/model/schemas";
 import type { SignUpWorkFormValues } from "@/entities/sign-up/model/types";
-
 import { SelectField } from "@/shared/ui/select-field";
 import {
   useGetRegions,
@@ -19,12 +17,16 @@ import {
 
 export const SignUpWorkForm = () => {
   const t = useTranslations();
-
   const locale = useLocale() as "kg" | "ru";
 
   const setSecondStep = useSignUpStore((s) => s.setSecondStep);
 
-  const { control, handleSubmit, setValue } = useForm<SignUpWorkFormValues>({
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    formState: { isSubmitting },
+  } = useForm<SignUpWorkFormValues>({
     resolver: zodResolver(SignUpWorkSchema),
     defaultValues: {
       regionId: 0,
@@ -38,6 +40,7 @@ export const SignUpWorkForm = () => {
   const regionId = useWatch({ control, name: "regionId" });
   const districtId = useWatch({ control, name: "districtId" });
   const organizationTypeId = useWatch({ control, name: "organizationTypeId" });
+  const organizationId = useWatch({ control, name: "organizationId" });
 
   const regionsQ = useGetRegions();
   const districtsQ = useGetDistricts(regionId);
@@ -58,11 +61,35 @@ export const SignUpWorkForm = () => {
     setValue("organizationId", 0);
   }, [organizationTypeId, setValue]);
 
-  const onSubmit = (values: SignUpWorkFormValues) => {
-    setSecondStep({
-      ...values,
-    });
+  const hasAllSelected =
+    regionId > 0 &&
+    districtId > 0 &&
+    organizationTypeId > 0 &&
+    organizationId > 0;
 
+  const regionsBlocked = regionsQ.isPending || regionsQ.isError;
+
+  const districtsBlocked =
+    regionId === 0 || districtsQ.isPending || districtsQ.isError;
+
+  const orgTypesBlocked = orgTypesQ.isPending || orgTypesQ.isError;
+
+  const orgsBlocked =
+    districtId === 0 ||
+    organizationTypeId === 0 ||
+    orgsQ.isPending ||
+    orgsQ.isError;
+
+  const isContinueDisabled =
+    isSubmitting ||
+    !hasAllSelected ||
+    regionsBlocked ||
+    districtsBlocked ||
+    orgTypesBlocked ||
+    orgsBlocked;
+
+  const onSubmit = (values: SignUpWorkFormValues) => {
+    setSecondStep({ ...values });
     console.log(values);
   };
 
@@ -88,7 +115,9 @@ export const SignUpWorkForm = () => {
               label={t("signUpWorkForm.regionLabel")}
               placeholder={
                 regionsQ.isPending
-                  ? t("signUpWorkForm.loading")
+                  ? t("common.loading")
+                  : regionsQ.isError
+                  ? t("common.loadError")
                   : t("signUpWorkForm.regionPlaceholder")
               }
               options={regionsQ.data ?? []}
@@ -102,6 +131,11 @@ export const SignUpWorkForm = () => {
                   ? t(fieldState.error.message)
                   : undefined
               }
+              loadErrorMessage={
+                regionsQ.isError ? t("common.loadError") : undefined
+              }
+              onRetry={regionsQ.isError ? () => regionsQ.refetch() : undefined}
+              retryText={t("common.retry")}
             />
           )}
         />
@@ -116,22 +150,33 @@ export const SignUpWorkForm = () => {
                 regionId === 0
                   ? t("signUpWorkForm.selectRegionFirst")
                   : districtsQ.isPending
-                  ? t("signUpWorkForm.loading")
+                  ? t("common.loading")
+                  : districtsQ.isError
+                  ? t("common.loadError")
                   : t("signUpWorkForm.districtPlaceholder")
               }
               options={districtsQ.data ?? []}
               locale={locale}
               value={field.value}
               onChange={field.onChange}
-              isDisabled={
-                regionId === 0 || districtsQ.isPending || districtsQ.isError
-              }
+              isDisabled={districtsBlocked}
               isInvalid={!!fieldState.error}
               errorMessage={
                 fieldState.error?.message
                   ? t(fieldState.error.message)
                   : undefined
               }
+              loadErrorMessage={
+                regionId !== 0 && districtsQ.isError
+                  ? t("common.loadError")
+                  : undefined
+              }
+              onRetry={
+                regionId !== 0 && districtsQ.isError
+                  ? () => districtsQ.refetch()
+                  : undefined
+              }
+              retryText={t("common.retry")}
             />
           )}
         />
@@ -144,20 +189,29 @@ export const SignUpWorkForm = () => {
               label={t("signUpWorkForm.orgTypeLabel")}
               placeholder={
                 orgTypesQ.isPending
-                  ? t("signUpWorkForm.loading")
+                  ? t("common.loading")
+                  : orgTypesQ.isError
+                  ? t("common.loadError")
                   : t("signUpWorkForm.orgTypePlaceholder")
               }
               options={orgTypesQ.data ?? []}
               locale={locale}
               value={field.value}
               onChange={field.onChange}
-              isDisabled={orgTypesQ.isPending || orgTypesQ.isError}
+              isDisabled={orgTypesBlocked}
               isInvalid={!!fieldState.error}
               errorMessage={
                 fieldState.error?.message
                   ? t(fieldState.error.message)
                   : undefined
               }
+              loadErrorMessage={
+                orgTypesQ.isError ? t("common.loadError") : undefined
+              }
+              onRetry={
+                orgTypesQ.isError ? () => orgTypesQ.refetch() : undefined
+              }
+              retryText={t("common.retry")}
             />
           )}
         />
@@ -172,30 +226,47 @@ export const SignUpWorkForm = () => {
                 districtId === 0 || organizationTypeId === 0
                   ? t("signUpWorkForm.selectDistrictAndTypeFirst")
                   : orgsQ.isPending
-                  ? t("signUpWorkForm.loading")
+                  ? t("common.loading")
+                  : orgsQ.isError
+                  ? t("common.loadError")
                   : t("signUpWorkForm.organizationPlaceholder")
               }
               options={orgsQ.data ?? []}
               locale={locale}
               value={field.value}
               onChange={field.onChange}
-              isDisabled={
-                districtId === 0 ||
-                organizationTypeId === 0 ||
-                orgsQ.isPending ||
-                orgsQ.isError
-              }
+              isDisabled={orgsBlocked}
               isInvalid={!!fieldState.error}
               errorMessage={
                 fieldState.error?.message
                   ? t(fieldState.error.message)
                   : undefined
               }
+              loadErrorMessage={
+                districtId !== 0 && organizationTypeId !== 0 && orgsQ.isError
+                  ? t("common.loadError")
+                  : undefined
+              }
+              onRetry={
+                districtId !== 0 && organizationTypeId !== 0 && orgsQ.isError
+                  ? () => orgsQ.refetch()
+                  : undefined
+              }
+              retryText={t("common.retry")}
             />
           )}
         />
 
-        <Button type="submit" className="w-full">
+        <Button
+          type="submit"
+          isDisabled={isContinueDisabled}
+          className={cn(
+            "w-full h-fit rounded-xl font-medium text-sm mt-3 lg:mt-5 lg:text-xl py-3 lg:py-4.5",
+            isContinueDisabled
+              ? "bg-[#EEEEEE] text-[#A9A9A9]"
+              : "bg-blue-700 text-white"
+          )}
+        >
           {t("signUpWorkForm.continue")}
         </Button>
       </Form>

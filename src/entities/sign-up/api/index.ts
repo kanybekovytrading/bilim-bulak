@@ -2,7 +2,7 @@ import { api } from "@/shared/api";
 import { DictionaryItem, District, Organization } from "../model/types";
 
 export const getRegions = async (): Promise<DictionaryItem[]> => {
-  const { data } = await api.get("/dicionaries/regions");
+  const { data } = await api.get("/dictionaries/regions");
   return data;
 };
 

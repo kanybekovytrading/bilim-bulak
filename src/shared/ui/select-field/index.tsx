@@ -1,6 +1,5 @@
 "use client";
-import { Label, ListBox, Select, cn } from "@heroui/react";
-import type { Key } from "@heroui/react";
+import { Button, Label, ListBox, Select, cn, type Key } from "@heroui/react";
 import { DictionaryItem } from "@/entities/sign-up/model/types";
 
 interface Props {
@@ -13,6 +12,9 @@ interface Props {
   isDisabled?: boolean;
   isInvalid?: boolean;
   errorMessage?: string;
+  loadErrorMessage?: string;
+  onRetry?: () => void;
+  retryText?: string;
   className?: string;
 }
 
@@ -26,18 +28,19 @@ export const SelectField = ({
   isDisabled,
   isInvalid,
   errorMessage,
+  loadErrorMessage,
+  onRetry,
+  retryText,
   className,
 }: Props) => {
-  const getLabel = (o: DictionaryItem) =>
-    locale === "ru" ? o.nameRu : o.nameKg;
+  const getLabel = (o: DictionaryItem) => {
+    return locale === "ru" ? o.nameRu : o.nameKg;
+  };
 
   const selectValue: Key | null = value === 0 ? null : String(value);
 
   const handleChange = (next: Key | null) => {
-    if (next === null) {
-      onChange(0);
-      return;
-    }
+    if (next === null) return onChange(0);
 
     const num = Number(next);
     onChange(Number.isFinite(num) ? num : 0);
@@ -103,6 +106,24 @@ export const SelectField = ({
         <p className="text-xs lg:text-sm text-red-500 mt-1 ml-2">
           {errorMessage}
         </p>
+      )}
+
+      {loadErrorMessage && (
+        <div className="mt-1 ml-2 flex items-center gap-2">
+          <p className="text-xs lg:text-sm text-red-500">{loadErrorMessage}</p>
+
+          {onRetry && (
+            <Button
+              type="button"
+              onPress={onRetry}
+              variant="ghost"
+              size="sm"
+              className="px-0 min-w-0 h-auto text-blue-700 hover:bg-inherit"
+            >
+              {retryText ?? "Retry"}
+            </Button>
+          )}
+        </div>
       )}
     </div>
   );
