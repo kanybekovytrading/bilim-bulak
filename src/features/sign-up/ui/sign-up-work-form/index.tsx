@@ -55,11 +55,7 @@ export const SignUpWorkForm = () => {
 
   useEffect(() => {
     setValue("organizationId", 0);
-  }, [districtId, setValue]);
-
-  useEffect(() => {
-    setValue("organizationId", 0);
-  }, [organizationTypeId, setValue]);
+  }, [districtId, organizationId, setValue]);
 
   const hasAllSelected =
     regionId > 0 &&
