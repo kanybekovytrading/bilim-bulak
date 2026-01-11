@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,6 +8,7 @@ import { useSignUpStore } from "@/entities/sign-up/model/store";
 import { SignUpWorkSchema } from "@/entities/sign-up/model/schemas";
 import type { SignUpWorkFormValues } from "@/entities/sign-up/model/types";
 import { SelectField } from "@/shared/ui/select-field";
+
 import {
   useGetRegions,
   useGetDistricts,
@@ -20,10 +21,21 @@ export const SignUpWorkForm = () => {
   const t = useTranslations();
   const locale = useLocale() as "kg" | "ru";
 
-  const setSecondStep = useSignUpStore((s) => s.setSecondStep);
   const firstStep = useSignUpStore((s) => s.firstStep);
+  const secondStep = useSignUpStore((s) => s.secondStep);
+  const setSecondStep = useSignUpStore((s) => s.setSecondStep);
 
   const registerM = useRegister();
+
+  const defaultValues = useMemo<SignUpWorkFormValues>(
+    () => ({
+      regionId: secondStep?.regionId ?? 0,
+      districtId: secondStep?.districtId ?? 0,
+      organizationTypeId: secondStep?.organizationTypeId ?? 0,
+      organizationId: secondStep?.organizationId ?? 0,
+    }),
+    [secondStep]
+  );
 
   const {
     control,
@@ -32,14 +44,15 @@ export const SignUpWorkForm = () => {
     formState: { isSubmitting },
   } = useForm<SignUpWorkFormValues>({
     resolver: zodResolver(SignUpWorkSchema),
-    defaultValues: {
-      regionId: 0,
-      districtId: 0,
-      organizationTypeId: 0,
-      organizationId: 0,
-    },
+    defaultValues,
     mode: "onSubmit",
   });
+
+  const values = useWatch({ control }) as SignUpWorkFormValues;
+
+  useEffect(() => {
+    setSecondStep(values);
+  }, [values, setSecondStep]);
 
   const regionId = useWatch({ control, name: "regionId" });
   const districtId = useWatch({ control, name: "districtId" });
@@ -51,18 +64,43 @@ export const SignUpWorkForm = () => {
   const orgTypesQ = useGetOrganizationTypes();
   const orgsQ = useGetOrganizations(districtId, organizationTypeId);
 
+  const prevRegionId = useRef<number | undefined>(undefined);
+  const prevDistrictId = useRef<number | undefined>(undefined);
+  const prevOrgTypeId = useRef<number | undefined>(undefined);
+
   useEffect(() => {
-    setValue("districtId", 0);
-    setValue("organizationTypeId", 0);
-    setValue("organizationId", 0);
+    if (prevRegionId.current === undefined) {
+      prevRegionId.current = regionId;
+      return;
+    }
+    if (prevRegionId.current !== regionId) {
+      setValue("districtId", 0);
+      setValue("organizationTypeId", 0);
+      setValue("organizationId", 0);
+      prevRegionId.current = regionId;
+    }
   }, [regionId, setValue]);
 
   useEffect(() => {
-    setValue("organizationId", 0);
+    if (prevDistrictId.current === undefined) {
+      prevDistrictId.current = districtId;
+      return;
+    }
+    if (prevDistrictId.current !== districtId) {
+      setValue("organizationId", 0);
+      prevDistrictId.current = districtId;
+    }
   }, [districtId, setValue]);
 
   useEffect(() => {
-    setValue("organizationId", 0);
+    if (prevOrgTypeId.current === undefined) {
+      prevOrgTypeId.current = organizationTypeId;
+      return;
+    }
+    if (prevOrgTypeId.current !== organizationTypeId) {
+      setValue("organizationId", 0);
+      prevOrgTypeId.current = organizationTypeId;
+    }
   }, [organizationTypeId, setValue]);
 
   const hasAllSelected =
@@ -81,16 +119,15 @@ export const SignUpWorkForm = () => {
     orgsQ.isPending ||
     orgsQ.isError;
 
+  const isSubmittingAny = isSubmitting || registerM.isPending;
+
   const isContinueDisabled =
-    isSubmitting ||
-    registerM.isPending ||
+    isSubmittingAny ||
     !hasAllSelected ||
     regionsBlocked ||
     districtsBlocked ||
     orgTypesBlocked ||
     orgsBlocked;
-
-  const isSubmittingAny = isSubmitting || registerM.isPending;
 
   const onSubmit = async (values: SignUpWorkFormValues) => {
     setSecondStep(values);
