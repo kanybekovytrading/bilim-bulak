@@ -90,6 +90,8 @@ export const SignUpWorkForm = () => {
     orgTypesBlocked ||
     orgsBlocked;
 
+  const isSubmittingAny = isSubmitting || registerM.isPending;
+
   const onSubmit = async (values: SignUpWorkFormValues) => {
     setSecondStep(values);
 
@@ -141,7 +143,6 @@ export const SignUpWorkForm = () => {
               locale={locale}
               value={field.value}
               onChange={field.onChange}
-              isDisabled={regionsQ.isPending || regionsQ.isError}
               isInvalid={!!fieldState.error}
               errorMessage={
                 fieldState.error?.message
@@ -151,7 +152,14 @@ export const SignUpWorkForm = () => {
               loadErrorMessage={
                 regionsQ.isError ? t("common.loadError") : undefined
               }
-              onRetry={regionsQ.isError ? () => regionsQ.refetch() : undefined}
+              isDisabled={
+                isSubmittingAny || regionsQ.isPending || regionsQ.isError
+              }
+              onRetry={
+                !isSubmittingAny && regionsQ.isError
+                  ? () => regionsQ.refetch()
+                  : undefined
+              }
               retryText={t("common.retry")}
             />
           )}
@@ -176,7 +184,6 @@ export const SignUpWorkForm = () => {
               locale={locale}
               value={field.value}
               onChange={field.onChange}
-              isDisabled={districtsBlocked}
               isInvalid={!!fieldState.error}
               errorMessage={
                 fieldState.error?.message
@@ -188,8 +195,9 @@ export const SignUpWorkForm = () => {
                   ? t("common.loadError")
                   : undefined
               }
+              isDisabled={isSubmittingAny || districtsBlocked}
               onRetry={
-                regionId !== 0 && districtsQ.isError
+                !isSubmittingAny && regionId !== 0 && districtsQ.isError
                   ? () => districtsQ.refetch()
                   : undefined
               }
@@ -215,7 +223,6 @@ export const SignUpWorkForm = () => {
               locale={locale}
               value={field.value}
               onChange={field.onChange}
-              isDisabled={orgTypesBlocked}
               isInvalid={!!fieldState.error}
               errorMessage={
                 fieldState.error?.message
@@ -225,8 +232,11 @@ export const SignUpWorkForm = () => {
               loadErrorMessage={
                 orgTypesQ.isError ? t("common.loadError") : undefined
               }
+              isDisabled={isSubmittingAny || orgTypesBlocked}
               onRetry={
-                orgTypesQ.isError ? () => orgTypesQ.refetch() : undefined
+                !isSubmittingAny && orgTypesQ.isError
+                  ? () => orgTypesQ.refetch()
+                  : undefined
               }
               retryText={t("common.retry")}
             />
@@ -252,7 +262,6 @@ export const SignUpWorkForm = () => {
               locale={locale}
               value={field.value}
               onChange={field.onChange}
-              isDisabled={orgsBlocked}
               isInvalid={!!fieldState.error}
               errorMessage={
                 fieldState.error?.message
@@ -264,8 +273,12 @@ export const SignUpWorkForm = () => {
                   ? t("common.loadError")
                   : undefined
               }
+              isDisabled={isSubmittingAny || orgsBlocked}
               onRetry={
-                districtId !== 0 && organizationTypeId !== 0 && orgsQ.isError
+                !isSubmittingAny &&
+                districtId !== 0 &&
+                organizationTypeId !== 0 &&
+                orgsQ.isError
                   ? () => orgsQ.refetch()
                   : undefined
               }
