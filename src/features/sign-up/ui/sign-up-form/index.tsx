@@ -33,7 +33,6 @@ export const SignUpForm = () => {
   );
 
   const {
-    register,
     handleSubmit,
     control,
     formState: { errors, isSubmitting, isValid, isDirty },
@@ -49,10 +48,7 @@ export const SignUpForm = () => {
   const isContinueDisabled = isSubmitting || !termsAccepted || !isValid;
 
   const onSubmit = async (values: SignUpFormValues) => {
-    setFirstStep({
-      ...values,
-    });
-
+    setFirstStep({ ...values });
     router.push("/auth/sign-up/work");
   };
 
@@ -70,16 +66,28 @@ export const SignUpForm = () => {
         className="mt-8 lg:mt-10 w-full flex flex-col gap-4 lg:gap-5"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <TextInputField
+        <Controller
           name="fullName"
-          label={t("signUpForm.fullNameLabel")}
-          errorMessage={
-            errors.fullName?.message ? t(errors.fullName.message) : undefined
-          }
-          inputProps={{
-            ...register("fullName"),
-            autoComplete: "name",
-            placeholder: t("signUpForm.fullNamePlaceholder"),
+          control={control}
+          render={({ field }) => {
+            const { ref: _ref, ...fieldProps } = field;
+
+            return (
+              <TextInputField
+                name="fullName"
+                label={t("signUpForm.fullNameLabel")}
+                errorMessage={
+                  errors.fullName?.message
+                    ? t(errors.fullName.message)
+                    : undefined
+                }
+                inputProps={{
+                  ...fieldProps,
+                  autoComplete: "name",
+                  placeholder: t("signUpForm.fullNamePlaceholder"),
+                }}
+              />
+            );
           }}
         />
 
@@ -101,29 +109,51 @@ export const SignUpForm = () => {
           )}
         />
 
-        <PasswordInputField
+        <Controller
           name="password"
-          label={t("signUpForm.passwordLabel")}
-          errorMessage={
-            errors.password?.message ? t(errors.password.message) : undefined
-          }
-          inputProps={{
-            ...register("password"),
-            autoComplete: "new-password",
+          control={control}
+          render={({ field }) => {
+            const { ref: _ref, ...fieldProps } = field;
+
+            return (
+              <PasswordInputField
+                name="password"
+                label={t("signUpForm.passwordLabel")}
+                errorMessage={
+                  errors.password?.message
+                    ? t(errors.password.message)
+                    : undefined
+                }
+                inputProps={{
+                  ...fieldProps,
+                  autoComplete: "new-password",
+                }}
+              />
+            );
           }}
         />
 
-        <PasswordInputField
+        <Controller
           name="confirmPassword"
-          label={t("signUpForm.confirmPasswordLabel")}
-          errorMessage={
-            errors.confirmPassword?.message
-              ? t(errors.confirmPassword.message)
-              : undefined
-          }
-          inputProps={{
-            ...register("confirmPassword"),
-            autoComplete: "new-password",
+          control={control}
+          render={({ field }) => {
+            const { ref: _ref, ...fieldProps } = field;
+
+            return (
+              <PasswordInputField
+                name="confirmPassword"
+                label={t("signUpForm.confirmPasswordLabel")}
+                errorMessage={
+                  errors.confirmPassword?.message
+                    ? t(errors.confirmPassword.message)
+                    : undefined
+                }
+                inputProps={{
+                  ...fieldProps,
+                  autoComplete: "new-password",
+                }}
+              />
+            );
           }}
         />
 
