@@ -1,14 +1,13 @@
 "use client";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Form, cn } from "@heroui/react";
+import { Button, cn, Form } from "@heroui/react";
 import { useSignUpStore } from "@/entities/sign-up/model/store";
 import { SignUpWorkSchema } from "@/entities/sign-up/model/schemas";
 import type { SignUpWorkFormValues } from "@/entities/sign-up/model/types";
 import { SelectField } from "@/shared/ui/select-field";
-
 import {
   useGetRegions,
   useGetDistricts,
@@ -16,6 +15,8 @@ import {
   useGetOrganizations,
   useRegister,
 } from "@/entities/sign-up/model/api/queries";
+import { useSignUpWorkUiState } from "../../lib/hooks/useSignUpWorkUiState";
+import { useCascadeReset } from "../../lib/hooks/useCascadeReset";
 
 export const SignUpWorkForm = () => {
   const t = useTranslations();
@@ -65,75 +66,28 @@ export const SignUpWorkForm = () => {
   const orgTypesQ = useGetOrganizationTypes();
   const orgsQ = useGetOrganizations(districtId, organizationTypeId);
 
-  const prevRegionId = useRef<number | undefined>(undefined);
-  const prevDistrictId = useRef<number | undefined>(undefined);
-  const prevOrgTypeId = useRef<number | undefined>(undefined);
+  useCascadeReset({
+    regionId,
+    districtId,
+    organizationTypeId,
+    setValue,
+  });
 
-  useEffect(() => {
-    if (prevRegionId.current === undefined) {
-      prevRegionId.current = regionId;
-      return;
-    }
+  const ui = useSignUpWorkUiState({
+    regionId,
+    districtId,
+    organizationTypeId,
+    organizationId,
+    regionsQ,
+    districtsQ,
+    orgTypesQ,
+    orgsQ,
+    isSubmitting,
+    isRegisterPending: registerM.isPending,
+  });
 
-    if (prevRegionId.current !== regionId) {
-      setValue("districtId", 0);
-      setValue("organizationTypeId", 0);
-      setValue("organizationId", 0);
-      prevRegionId.current = regionId;
-    }
-  }, [regionId, setValue]);
-
-  useEffect(() => {
-    if (prevDistrictId.current === undefined) {
-      prevDistrictId.current = districtId;
-      return;
-    }
-
-    if (prevDistrictId.current !== districtId) {
-      setValue("organizationId", 0);
-      prevDistrictId.current = districtId;
-    }
-  }, [districtId, setValue]);
-
-  useEffect(() => {
-    if (prevOrgTypeId.current === undefined) {
-      prevOrgTypeId.current = organizationTypeId;
-      return;
-    }
-    if (prevOrgTypeId.current !== organizationTypeId) {
-      setValue("organizationId", 0);
-      prevOrgTypeId.current = organizationTypeId;
-    }
-  }, [organizationTypeId, setValue]);
-
-  const hasAllSelected =
-    regionId > 0 &&
-    districtId > 0 &&
-    organizationTypeId > 0 &&
-    organizationId > 0;
-
-  const regionsBlocked = regionsQ.isPending || regionsQ.isError;
-  const districtsBlocked =
-    regionId === 0 || districtsQ.isPending || districtsQ.isError;
-  const orgTypesBlocked = orgTypesQ.isPending || orgTypesQ.isError;
-  const orgsBlocked =
-    districtId === 0 ||
-    organizationTypeId === 0 ||
-    orgsQ.isPending ||
-    orgsQ.isError;
-
-  const isSubmittingAny = isSubmitting || registerM.isPending;
-
-  const isContinueDisabled =
-    isSubmittingAny ||
-    !hasAllSelected ||
-    regionsBlocked ||
-    districtsBlocked ||
-    orgTypesBlocked ||
-    orgsBlocked;
-
-  const onSubmit = async (values: SignUpWorkFormValues) => {
-    setSecondStep(values);
+  const onSubmit = async (formValues: SignUpWorkFormValues) => {
+    setSecondStep(formValues);
 
     if (!firstStep) return;
 
@@ -141,7 +95,7 @@ export const SignUpWorkForm = () => {
       fullName: firstStep.fullName,
       phone: firstStep.phone,
       password: firstStep.password,
-      ...values,
+      ...formValues,
     };
 
     try {
@@ -192,11 +146,9 @@ export const SignUpWorkForm = () => {
               loadErrorMessage={
                 regionsQ.isError ? t("common.loadError") : undefined
               }
-              isDisabled={
-                isSubmittingAny || regionsQ.isPending || regionsQ.isError
-              }
+              isDisabled={ui.isSubmittingAny || ui.regionsBlocked}
               onRetry={
-                !isSubmittingAny && regionsQ.isError
+                !ui.isSubmittingAny && regionsQ.isError
                   ? () => regionsQ.refetch()
                   : undefined
               }
@@ -235,9 +187,9 @@ export const SignUpWorkForm = () => {
                   ? t("common.loadError")
                   : undefined
               }
-              isDisabled={isSubmittingAny || districtsBlocked}
+              isDisabled={ui.isSubmittingAny || ui.districtsBlocked}
               onRetry={
-                !isSubmittingAny && regionId !== 0 && districtsQ.isError
+                !ui.isSubmittingAny && regionId !== 0 && districtsQ.isError
                   ? () => districtsQ.refetch()
                   : undefined
               }
@@ -272,9 +224,9 @@ export const SignUpWorkForm = () => {
               loadErrorMessage={
                 orgTypesQ.isError ? t("common.loadError") : undefined
               }
-              isDisabled={isSubmittingAny || orgTypesBlocked}
+              isDisabled={ui.isSubmittingAny || ui.orgTypesBlocked}
               onRetry={
-                !isSubmittingAny && orgTypesQ.isError
+                !ui.isSubmittingAny && orgTypesQ.isError
                   ? () => orgTypesQ.refetch()
                   : undefined
               }
@@ -313,9 +265,9 @@ export const SignUpWorkForm = () => {
                   ? t("common.loadError")
                   : undefined
               }
-              isDisabled={isSubmittingAny || orgsBlocked}
+              isDisabled={ui.isSubmittingAny || ui.orgsBlocked}
               onRetry={
-                !isSubmittingAny &&
+                !ui.isSubmittingAny &&
                 districtId !== 0 &&
                 organizationTypeId !== 0 &&
                 orgsQ.isError
@@ -347,10 +299,10 @@ export const SignUpWorkForm = () => {
 
         <Button
           type="submit"
-          isDisabled={isContinueDisabled}
+          isDisabled={ui.isContinueDisabled}
           className={cn(
             "w-full h-fit rounded-xl font-medium text-sm mt-3 lg:mt-5 lg:text-xl py-3 lg:py-4.5",
-            isContinueDisabled
+            ui.isContinueDisabled
               ? "bg-[#EEEEEE] text-[#A9A9A9]"
               : "bg-blue-700 text-white"
           )}
