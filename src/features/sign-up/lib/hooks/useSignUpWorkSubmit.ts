@@ -27,22 +27,24 @@ export const useSignUpWorkSubmit = () => {
       ...formValues,
     };
 
-    await toast.promise(registerM.mutateAsync(payload), {
-      loading: "Отправляем...",
-      success: (res) => {
-        router.push("/auth/otp");
-        return t("common.codeSent");
-      },
-      error: (err) => {
-        const message = err.response.data.message;
+    router.push("/auth/otp");
 
-        if (message === "Phone already registered") {
-          return t("common.phoneAlreadyRegistered");
-        }
+    // await toast.promise(registerM.mutateAsync(payload), {
+    //   loading: "Отправляем...",
+    //   success: (res) => {
+    //     router.push("/auth/otp");
+    //     return t("common.codeSent");
+    //   },
+    //   error: (err) => {
+    //     const message = err.response.data.message;
 
-        return t("common.registerError");
-      },
-    });
+    //     if (message === "Phone already registered") {
+    //       return t("common.phoneAlreadyRegistered");
+    //     }
+
+    //     return t("common.registerError");
+    //   },
+    // });
   };
 
   return { registerM, onSubmit };

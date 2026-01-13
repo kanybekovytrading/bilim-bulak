@@ -21,7 +21,6 @@ export const SignUpWorkForm = () => {
     handleSubmit,
     setValue,
     isSubmitting,
-
     regionId,
     districtId,
     organizationTypeId,

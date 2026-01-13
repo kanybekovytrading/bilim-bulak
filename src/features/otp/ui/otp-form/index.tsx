@@ -1,13 +1,15 @@
 "use client";
 import { useTranslations } from "next-intl";
 import { Button, Form, cn } from "@heroui/react";
+import { useSignUpStore } from "@/entities/sign-up/model/store";
+import { formatKgPhone } from "@/shared/lib/utils/helpers";
 
 export const OtpForm = () => {
   const t = useTranslations();
 
-  const phone = "+996 XXX XXX XXX";
+  const phone = useSignUpStore((s) => s.firstStep?.phone);
 
-  const isContinueDisabled = false;
+  const isConfirmDisabled = false;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,7 +23,7 @@ export const OtpForm = () => {
       </h1>
 
       <p className="text-blue-700 text-base lg:text-xl font-medium mt-2 text-center">
-        {t("otpPage.formDescription", { phone })}
+        {t("otpPage.formDescription", { phone: formatKgPhone(phone) })}
       </p>
 
       <Form
@@ -40,10 +42,10 @@ export const OtpForm = () => {
 
         <Button
           type="submit"
-          isDisabled={isContinueDisabled}
+          isDisabled={isConfirmDisabled}
           className={cn(
             "w-full h-fit rounded-xl font-medium text-sm lg:text-xl py-3 lg:py-4.5",
-            isContinueDisabled
+            isConfirmDisabled
               ? "bg-[#EEEEEE] text-[#A9A9A9]"
               : "bg-blue-700 text-white"
           )}
