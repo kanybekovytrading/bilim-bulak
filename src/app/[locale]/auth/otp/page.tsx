@@ -5,7 +5,7 @@ import { OtpForm } from "@/features/otp/ui/otp-form";
 import { useOtpPageGuard } from "@/features/otp/lib/hooks/useOtpPageGuard";
 import { BackButton } from "@/shared/ui/back-button";
 
-const SignUpOtp = () => {
+const Otp = () => {
   const t = useTranslations();
 
   const { isAllowed } = useOtpPageGuard();
@@ -22,7 +22,7 @@ const SignUpOtp = () => {
         <div className="flex-col items-center hidden lg:flex">
           <Image
             src="/images/otp.webp"
-            alt="Sign Up"
+            alt="Otp"
             width={472}
             height={472}
           />
@@ -40,4 +40,4 @@ const SignUpOtp = () => {
   );
 };
 
-export default SignUpOtp;
+export default Otp;

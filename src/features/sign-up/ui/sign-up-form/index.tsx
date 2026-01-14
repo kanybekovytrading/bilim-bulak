@@ -165,7 +165,7 @@ export const SignUpForm = () => {
             type="button"
             variant="ghost"
             size="sm"
-            className="px-0 min-w-0 h-auto text-blue-700 font-semibold hover:bg-transparent"
+            className="px-0 min-w-0 h-auto text-blue-700 lg:text-xl text-sm font-semibold hover:bg-transparent"
             onClick={() => router.push("/auth/sign-in")}
           >
             {t("common.login")}
