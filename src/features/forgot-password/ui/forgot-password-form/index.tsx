@@ -1,11 +1,14 @@
 "use client";
+
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Form, cn } from "@heroui/react";
-import { ForgotPasswordFormValues } from "@/entities/forgot-password/model/types";
+import { toast } from "sonner";
+import type { ForgotPasswordFormValues } from "@/entities/forgot-password/model/types";
 import { ForgotPasswordSchema } from "@/entities/forgot-password/model/schemas";
+import { useSendOtpForgotPassword } from "@/entities/forgot-password/model/api/queries";
 import { PhoneInputField } from "@/shared/ui/phone-input-field";
 import { useOtpStore } from "@/shared/stores/useOtpStore";
 
@@ -26,11 +29,28 @@ export const ForgotPasswordForm = () => {
 
   const setOtpContext = useOtpStore((s) => s.setContext);
 
-  const isContinueDisabled = isSubmitting || !isValid;
+  const sendOtpM = useSendOtpForgotPassword();
+
+  const isContinueDisabled = isSubmitting || !isValid || sendOtpM.isPending;
 
   const onSubmit = async (values: ForgotPasswordFormValues) => {
-    setOtpContext({ phone: values.phone, type: "PASSWORD_RESET" });
-    router.push("/auth/otp");
+    const payload = {
+      phone: values.phone,
+      type: "PASSWORD_RESET" as const,
+    };
+
+    await toast.promise(sendOtpM.mutateAsync(payload), {
+      loading: t("forgotPasswordForm.loading"),
+      success: () => {
+        setOtpContext(payload);
+        router.push("/auth/otp");
+        return t("forgotPasswordForm.codeSent");
+      },
+      error: (err) => {
+        const msg = err?.response?.data?.message;
+        return msg ? msg : t("common.requestError");
+      },
+    });
   };
 
   return (
@@ -75,7 +95,7 @@ export const ForgotPasswordForm = () => {
               : "bg-blue-700 text-white"
           )}
         >
-          {isSubmitting
+          {sendOtpM.isPending
             ? t("common.loading")
             : t("forgotPasswordForm.continue")}
         </Button>

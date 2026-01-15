@@ -1,10 +1,6 @@
 import { api } from "@/shared/api";
-import type {
-  ResendOtpParams,
-  ResendOtpResponse,
-  VerifyOtpPayload,
-  VerifyOtpResponse,
-} from "../types";
+import { OtpParams, OtpResponse, VerifyOtpPayload } from "@/shared/types";
+import type { VerifyOtpResponse } from "../types";
 
 export const verifyOtp = async (
   payload: VerifyOtpPayload
@@ -17,10 +13,8 @@ export const verifyOtp = async (
   return data;
 };
 
-export const resendOtp = async (
-  params: ResendOtpParams
-): Promise<ResendOtpResponse> => {
-  const { data } = await api.post<ResendOtpResponse>("/auth/resend-otp", null, {
+export const resendOtp = async (params: OtpParams): Promise<OtpResponse> => {
+  const { data } = await api.post<OtpResponse>("/auth/resend-otp", null, {
     params,
   });
   return data;

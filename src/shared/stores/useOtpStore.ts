@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { VerifyOtpType } from "@/entities/otp/model/types";
+import { VerifyOtpType } from "../types";
 
 interface OtpContext {
   phone: string;
