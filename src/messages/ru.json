@@ -159,5 +159,14 @@
     "continue": "Продолжить",
     "loading": "Отправляем код...",
     "codeSent": "Код отправлен"
+  },
+  "newPasswordForm": {
+    "formTitle": "Обновить пароль",
+    "formDescription": "Введите новый пароль и подтвердите его.",
+    "passwordLabel": "Новый пароль",
+    "confirmPasswordLabel": "Повторите новый пароль",
+    "save": "Сохранить",
+    "loading": "Сохраняем...",
+    "success": "Пароль обновлён"
   }
 }

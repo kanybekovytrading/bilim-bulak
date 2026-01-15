@@ -159,5 +159,14 @@
     "continue": "Улантуу",
     "loading": "Код жөнөтүп жатабыз...",
     "codeSent": "Код жөнөтүлдү"
+  },
+  "newPasswordForm": {
+    "formTitle": "Сыр сөздү жаңыртуу",
+    "formDescription": "Жаңы сыр сөздү жазыңыз жана аны тастыктаңыз.",
+    "passwordLabel": "Жаңы сыр сөз",
+    "confirmPasswordLabel": "Жаңы сыр сөздү кайталаңыз",
+    "save": "Сактоо",
+    "loading": "Сактап жатабыз...",
+    "success": "Сыр сөз жаңыртылды"
   }
 }

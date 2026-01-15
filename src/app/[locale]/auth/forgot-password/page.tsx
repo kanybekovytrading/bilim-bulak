@@ -14,7 +14,7 @@ const ForgotPassword = () => {
         <Image
           className="hidden lg:inline-block"
           src="/images/forgot-password.webp"
-          alt="Otp"
+          alt="Forgot Password"
           width={472}
           height={472}
         />
