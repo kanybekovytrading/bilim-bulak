@@ -50,7 +50,6 @@ export const SignUpForm = () => {
 
   const onSubmit = async (values: SignUpFormValues) => {
     setFirstStep(values);
-    setOtpContext({ phone: values.phone, type: "REGISTRATION" });
     router.push("/auth/sign-up/work");
   };
 

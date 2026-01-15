@@ -8,6 +8,7 @@ import { useVerifyOtp, useResendOtp } from "@/entities/otp/model/api/queries";
 import { formatKgPhone } from "@/shared/lib/utils/helpers";
 import { useAuthStore } from "@/shared/stores/useAuthStore";
 import { usePersistentCountdown } from "./usePersistentCountdown";
+import { useOtpStore } from "@/shared/stores/useOtpStore";
 
 export const useOtpForm = () => {
   const [otp, setOtp] = useState("");
@@ -18,6 +19,7 @@ export const useOtpForm = () => {
 
   const phoneRaw = useSignUpStore((s) => s.firstStep?.phone) ?? "";
   const promote = useAuthStore((s) => s.promoteOtpToAuth);
+  const phoneForgotPassword = useOtpStore((s) => s.context?.phone);
 
   const phone = useMemo(() => formatKgPhone(phoneRaw), [phoneRaw]);
 
@@ -46,8 +48,12 @@ export const useOtpForm = () => {
     toast.promise(verifyM.mutateAsync(payload), {
       loading: t("otpPage.loading"),
       success: () => {
-        promote();
-        router.replace("/dashboard");
+        if (phoneForgotPassword) {
+          router.replace("/auth/forgot-password/new-password");
+        } else {
+          promote();
+          router.replace("/dashboard");
+        }
 
         return t("otpPage.success");
       },
