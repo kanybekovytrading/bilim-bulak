@@ -20,6 +20,7 @@ export const useOtpForm = () => {
   const phoneRaw = useSignUpStore((s) => s.firstStep?.phone) ?? "";
   const promote = useAuthStore((s) => s.promoteOtpToAuth);
   const type = useOtpStore((s) => s.context?.type);
+  const phoneOtp = useOtpStore((s) => s.context?.phone);
 
   const phone = useMemo(() => formatKgPhone(phoneRaw), [phoneRaw]);
 
@@ -40,7 +41,7 @@ export const useOtpForm = () => {
     e.preventDefault();
 
     const payload = {
-      phone: phoneRaw,
+      phone: type === "REGISTRATION" ? phoneRaw : phoneOtp ?? "",
       code: otp,
       type: "REGISTRATION" as const,
     };
