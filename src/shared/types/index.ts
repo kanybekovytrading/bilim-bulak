@@ -5,6 +5,8 @@ export type AuthResponse = {
   role: string;
 };
 
+export type Locale = "kg" | "ru";
+
 export type VerifyOtpType = "REGISTRATION" | "PASSWORD_RESET";
 
 export interface VerifyOtpPayload {

@@ -1,12 +1,12 @@
 "use client";
 import { Button, Label, ListBox, Select, cn, type Key } from "@heroui/react";
-import { DictionaryItem } from "@/entities/auth/sign-up/model/types";
+import { DictionaryItem, Locale } from "@/shared/types";
 
 interface Props {
   label: string;
   placeholder?: string;
   options: DictionaryItem[];
-  locale: "kg" | "ru";
+  locale: Locale;
   value: number;
   onChange: (value: number) => void;
   isDisabled?: boolean;

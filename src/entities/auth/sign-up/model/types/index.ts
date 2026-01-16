@@ -21,4 +21,3 @@ export interface SignUpSecondStepData {
 export type RegisterPayload = Pick<SignUpFirstStepData, "phone" | "password"> &
   SignUpSecondStepData;
 
-export type Locale = "kg" | "ru";

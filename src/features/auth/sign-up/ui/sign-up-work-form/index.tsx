@@ -2,7 +2,7 @@ import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { Button, cn, Form } from "@heroui/react";
 import { useSignUpWorkDictionaries } from "@/entities/auth/sign-up/model/hooks/useSignUpWorkDictionaries";
-import { Locale } from "@/entities/auth/sign-up/model/types";
+import { Locale } from "@/shared/types";
 import { useSignUpWorkForm } from "../../lib/hooks/useSignUpWorkForm";
 import { useCascadeReset } from "../../lib/hooks/useCascadeReset";
 import { useSignUpWorkSubmit } from "../../lib/hooks/useSignUpWorkSubmit";
