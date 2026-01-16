@@ -1,7 +1,8 @@
 "use client";
 import { Intro } from "@/widgets/landing/intro";
 import { Steps } from "@/widgets/landing/steps";
-import { UserLayout } from "@/widgets/layout/user-layout";
+import { Header } from "@/widgets/layout/header";
+import { Footer } from "@/widgets/layout/footer";
 import { useScrollRestorer } from "@/shared/lib/hooks/useScrollRestorer";
 
 const Home = () => {
@@ -9,10 +10,10 @@ const Home = () => {
 
   return (
     <>
-      <UserLayout>
-        <Intro />
-        <Steps />
-      </UserLayout>
+      <Header />
+      <Intro />
+      <Steps />
+      <Footer />
     </>
   );
 };
