@@ -25,7 +25,7 @@ export const MobileBottomNav = () => {
   return (
     <nav
       className={cn(
-        "md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white",
+        "md:hidden sticky bottom-0 left-0 right-0 z-50 bg-white",
         "border-t border-neutral-200"
       )}
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
