@@ -13,7 +13,7 @@ export const IntroTestCard = ({ test, isPaying = false, onPay }: Props) => {
   const t = useTranslations();
 
   return (
-    <div className="bg-white rounded-3xl max-w-86.5 p-4 md:basis-[calc(50%-1rem)] lg:basis-0 lg:flex-1">
+    <div className="bg-white rounded-3xl max-w-86.5 p-4 md:basis-[calc(50%-1rem)] lg:basis-0 lg:flex-1 h-full flex flex-col">
       <h3 className="font-semibold text-xl md:text-2xl">{test.title}</h3>
 
       <p className="font-medium text-neutral-500 mt-2">{test.description}</p>
@@ -38,8 +38,10 @@ export const IntroTestCard = ({ test, isPaying = false, onPay }: Props) => {
         </span>
       </p>
 
+      <div className="h-5" />
+
       <Button
-        className="bg-blue-700 mt-3 md:mt-6 rounded-xl w-full font-medium text-sm md:text-xl py-3.5 md:py-6"
+        className="bg-blue-700 mt-auto pt-3 md:pt-6 rounded-xl w-full font-medium text-sm md:text-xl py-3.5 md:py-6"
         isDisabled={isPaying}
         onClick={() => onPay(test.id)}
       >
