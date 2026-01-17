@@ -10,7 +10,7 @@ import {
   TEST_STATUS_I18N_KEY,
   TestItem,
 } from "@/shared/types";
-import { Modal } from "../modal";
+import { TestActionModal } from "../test-action-modal";
 
 interface Props {
   test: TestItem;
@@ -45,10 +45,21 @@ export const TestCard = ({ test }: Props) => {
 
   const handleClick = () => {
     if (isCompleted) {
-      return router.push(`/user/courses`);
+      return router.push("/user/courses");
     }
 
     setIsModalOpen(true);
+  };
+
+  const onConfirm = () => {
+    setIsModalOpen(false);
+
+    if (isPaid) {
+      router.push(`/user/tests/${test.id}`);
+      return;
+    }
+
+    pay(test.id);
   };
 
   return (
@@ -94,16 +105,19 @@ export const TestCard = ({ test }: Props) => {
           onClick={handleClick}
         >
           {buttonText}
-
           {isCompleted && <MoveRight />}
         </Button>
       </div>
 
-      <Modal
-        isOpen={isModalOpen}
-        onOpenChange={setIsModalOpen}
-        title={isPaid ? t("testsPage.start") : t("testsPage.pay")}
-      />
+      {!isCompleted && (
+        <TestActionModal
+          isOpen={isModalOpen}
+          onOpenChange={setIsModalOpen}
+          isAvailable={isAvailable}
+          test={test}
+          onConfirm={onConfirm}
+        />
+      )}
     </>
   );
 };
