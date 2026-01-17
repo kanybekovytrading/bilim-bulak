@@ -22,7 +22,7 @@ export const UserLayout = ({ children }: Props) => {
     <>
       <Header />
 
-      <div className="mt-7 px-4 max-w-400 m-auto">{children}</div>
+      <div className="mt-7 px-5 max-w-400 m-auto">{children}</div>
 
       <Footer />
 
