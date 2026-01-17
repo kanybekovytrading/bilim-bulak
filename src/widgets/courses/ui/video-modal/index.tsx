@@ -33,6 +33,7 @@ export const VideoModal = ({ isOpen, onOpenChange, video }: Props) => {
                   <iframe
                     key={embedUrl}
                     src={embedUrl}
+                    height={250}
                     title={video?.title ?? "Video"}
                     className="w-full h-full"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
