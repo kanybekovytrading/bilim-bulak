@@ -13,7 +13,3 @@ export interface TestItem {
 }
 
 export type GetTestsResponse = TestItem[];
-
-export interface GetTestsParams {
-  language?: Locale;
-}

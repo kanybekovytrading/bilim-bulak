@@ -1,9 +1,7 @@
 import { api } from "@/shared/api";
-import { GetTestsParams, GetTestsResponse } from "../types";
+import { GetTestsResponse } from "../types";
 
-export const getTests = async (
-  params?: GetTestsParams
-): Promise<GetTestsResponse> => {
-  const { data } = await api.get<GetTestsResponse>("/tests", { params });
+export const getTests = async (): Promise<GetTestsResponse> => {
+  const { data } = await api.get<GetTestsResponse>("/tess");
   return data;
 };
