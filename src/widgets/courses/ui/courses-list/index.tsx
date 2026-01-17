@@ -6,5 +6,5 @@ export const CoursesList = () => {
 
   console.log(courses);
 
-  return <div>CoursesList</div>;
+  return <section>CoursesList</section>;
 };

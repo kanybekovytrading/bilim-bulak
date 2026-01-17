@@ -1,6 +1,6 @@
 import { Spinner } from "@heroui/react";
 import { useTranslations } from "next-intl";
-import { usePay } from "@/features/payment/lib/hooks/usePay";
+import { usePay } from "@/features/user/payment/lib/hooks/usePay";
 import { useGetTests } from "@/entities/user/tests/model/api/queries";
 import { ErrorBlock } from "@/shared/ui/error-block";
 import { TestCard } from "../test-card";

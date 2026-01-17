@@ -2,7 +2,7 @@
 import { useTranslations } from "next-intl";
 import { Button } from "@heroui/react";
 import { MoveDown } from "lucide-react";
-import { Tests } from "@/features/welcome/ui/tests";
+import { Tests } from "@/features/user/welcome/ui/tests";
 
 export const Welcome = () => {
   const t = useTranslations();
@@ -12,7 +12,7 @@ export const Welcome = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <section className="flex flex-col items-center justify-center">
       <h1 className="font-bold text-3xl md:text-5xl text-center">
         {t("welcome.title")}
       </h1>
@@ -29,6 +29,6 @@ export const Welcome = () => {
       </Button>
 
       <Tests />
-    </div>
+    </section>
   );
 };
