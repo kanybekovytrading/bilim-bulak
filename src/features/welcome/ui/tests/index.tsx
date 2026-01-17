@@ -3,6 +3,7 @@ import { Button, Spinner } from "@heroui/react";
 import { useTranslations } from "next-intl";
 import { useGetTests } from "@/entities/user/tests/model/api/queries";
 import { CircleQuestionMark, Clock } from "lucide-react";
+import { ErrorBlock } from "@/shared/ui/error-block";
 
 export const Tests = () => {
   const t = useTranslations();
@@ -20,7 +21,7 @@ export const Tests = () => {
       </h2>
 
       {isError ? (
-        
+        <ErrorBlock refetch={refetch} className="mt-14" />
       ) : (
         <div className="mt-14 flex flex-col md:flex-row md:flex-wrap lg:flex-nowrap md:items-stretch gap-8 relative before:content-[''] before:absolute before:inset-0 before:-z-10 before:rounded-2xl before:bg-indigo-100 before:blur-2xl before:opacity-80">
           {tests?.map((test) => (
