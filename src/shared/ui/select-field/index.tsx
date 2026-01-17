@@ -6,7 +6,6 @@ interface Props {
   label: string;
   placeholder?: string;
   options: DictionaryItem[];
-  locale: Locale;
   value: number;
   onChange: (value: number) => void;
   isDisabled?: boolean;
@@ -22,7 +21,6 @@ export const SelectField = ({
   label,
   placeholder,
   options,
-  locale,
   value,
   onChange,
   isDisabled,

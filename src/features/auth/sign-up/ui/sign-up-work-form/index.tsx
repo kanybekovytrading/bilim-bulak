@@ -1,8 +1,7 @@
 import { useRouter } from "next/navigation";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { Button, cn, Form } from "@heroui/react";
-import { useSignUpWorkDictionaries } from "@/entities/auth/sign-up/model/hooks/useSignUpWorkDictionaries";
-import { Locale } from "@/shared/types";
+import { useDictionaries } from "@/entities/auth/dictionaries/model/hooks/useDictionaries";
 import { useSignUpWorkForm } from "../../lib/hooks/useSignUpWorkForm";
 import { useCascadeReset } from "../../lib/hooks/useCascadeReset";
 import { useSignUpWorkSubmit } from "../../lib/hooks/useSignUpWorkSubmit";
@@ -13,8 +12,6 @@ export const SignUpWorkForm = () => {
   const router = useRouter();
 
   const t = useTranslations();
-
-  const locale = useLocale() as Locale;
 
   const {
     control,
@@ -27,7 +24,7 @@ export const SignUpWorkForm = () => {
     organizationId,
   } = useSignUpWorkForm();
 
-  const dicts = useSignUpWorkDictionaries({
+  const dicts = useDictionaries({
     regionId,
     districtId,
     organizationTypeId,
@@ -72,7 +69,6 @@ export const SignUpWorkForm = () => {
         <SignUpWorkSelectsSection
           control={control}
           t={t}
-          locale={locale}
           regionId={regionId}
           districtId={districtId}
           organizationTypeId={organizationTypeId}

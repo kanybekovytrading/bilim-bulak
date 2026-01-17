@@ -5,7 +5,7 @@ import {
   useGetRegions,
 } from "../api/queries";
 
-export const useSignUpWorkDictionaries = (args: {
+export const useDictionaries = (args: {
   regionId: number;
   districtId: number;
   organizationTypeId: number;

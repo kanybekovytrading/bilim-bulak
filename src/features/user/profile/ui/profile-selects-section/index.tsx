@@ -1,40 +1,35 @@
-import { Controller, type Control } from "react-hook-form";
+import { useTranslations } from "next-intl";
+import { Control, Controller } from "react-hook-form";
 import type { UseQueryResult } from "@tanstack/react-query";
-import type { SignUpWorkFormValues } from "@/entities/auth/sign-up/model/types";
+import { ProfileFormValues } from "@/entities/user/profile/model/types";
 import { SelectField } from "@/shared/ui/select-field";
-import { DictionaryItem, District, Locale, Organization } from "@/shared/types";
+import type { DictionaryItem, District, Organization } from "@/shared/types";
 
 interface Props {
-  control: Control<SignUpWorkFormValues>;
-  t: (key: string) => string;
+  control: Control<ProfileFormValues>;
   regionId: number;
   districtId: number;
   organizationTypeId: number;
+  isSubmittingAny: boolean;
   dicts: {
     regionsQ: UseQueryResult<DictionaryItem[], unknown>;
     districtsQ: UseQueryResult<District[], unknown>;
     orgTypesQ: UseQueryResult<DictionaryItem[], unknown>;
     orgsQ: UseQueryResult<Organization[], unknown>;
   };
-  ui: {
-    isSubmittingAny: boolean;
-    regionsBlocked: boolean;
-    districtsBlocked: boolean;
-    orgTypesBlocked: boolean;
-    orgsBlocked: boolean;
-  };
 }
 
-export const SignUpWorkSelectsSection = ({
-  control,
-  t,
+export const ProfileSelectsSection = ({
+  dicts,
   regionId,
   districtId,
   organizationTypeId,
-  dicts,
-  ui,
+  control,
+  isSubmittingAny,
 }: Props) => {
   const { regionsQ, districtsQ, orgTypesQ, orgsQ } = dicts;
+
+  const t = useTranslations();
 
   return (
     <>
@@ -63,9 +58,9 @@ export const SignUpWorkSelectsSection = ({
             loadErrorMessage={
               regionsQ.isError ? t("common.loadError") : undefined
             }
-            isDisabled={ui.isSubmittingAny || ui.regionsBlocked}
+            isDisabled={isSubmittingAny}
             onRetry={
-              !ui.isSubmittingAny && regionsQ.isError
+              !isSubmittingAny && regionsQ.isError
                 ? () => regionsQ.refetch()
                 : undefined
             }
@@ -103,9 +98,9 @@ export const SignUpWorkSelectsSection = ({
                 ? t("common.loadError")
                 : undefined
             }
-            isDisabled={ui.isSubmittingAny || ui.districtsBlocked}
+            isDisabled={isSubmittingAny || regionId === 0}
             onRetry={
-              !ui.isSubmittingAny && regionId !== 0 && districtsQ.isError
+              !isSubmittingAny && regionId !== 0 && districtsQ.isError
                 ? () => districtsQ.refetch()
                 : undefined
             }
@@ -139,9 +134,9 @@ export const SignUpWorkSelectsSection = ({
             loadErrorMessage={
               orgTypesQ.isError ? t("common.loadError") : undefined
             }
-            isDisabled={ui.isSubmittingAny || ui.orgTypesBlocked}
+            isDisabled={isSubmittingAny}
             onRetry={
-              !ui.isSubmittingAny && orgTypesQ.isError
+              !isSubmittingAny && orgTypesQ.isError
                 ? () => orgTypesQ.refetch()
                 : undefined
             }
@@ -179,9 +174,11 @@ export const SignUpWorkSelectsSection = ({
                 ? t("common.loadError")
                 : undefined
             }
-            isDisabled={ui.isSubmittingAny || ui.orgsBlocked}
+            isDisabled={
+              isSubmittingAny || districtId === 0 || organizationTypeId === 0
+            }
             onRetry={
-              !ui.isSubmittingAny &&
+              !isSubmittingAny &&
               districtId !== 0 &&
               organizationTypeId !== 0 &&
               orgsQ.isError
