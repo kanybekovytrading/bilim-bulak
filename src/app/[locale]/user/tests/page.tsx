@@ -1,8 +1,9 @@
 import { UserLayout } from "@/widgets/layout/user-layout";
+import { TestsSection } from "@/features/user/tests/ui/tests-section";
 
 const Tests = () => (
   <UserLayout>
-    <section className="animate-fade-in">Tests</section>
+    <TestsSection />
   </UserLayout>
 );
 
