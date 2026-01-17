@@ -22,7 +22,7 @@ export const Modal = ({
         variant="blur"
       >
         <HeroModal.Container placement="center">
-          <HeroModal.Dialog className="sm:max-w-[420px]">
+          <HeroModal.Dialog>
             <HeroModal.CloseTrigger />
 
             <HeroModal.Header>
