@@ -71,7 +71,7 @@ export const TestRunner = ({ test, testId }: Props) => {
   };
 
   return (
-    <div className="max-w-400 min-h-screen m-auto flex justify-center">
+    <div className="max-w-400 min-h-screen m-auto flex justify-center mt-10">
       <div
         style={{ width: 472, padding: "0px 20px" }}
         className="flex flex-col items-center"
