@@ -1,4 +1,5 @@
-import { KG_LOCAL_LEN, KG_PREFIX } from "../constants";
+import { Locale } from "@/shared/types";
+import { KG_LOCAL_LEN, KG_PREFIX, LANG_WHITELIST_PREFIXES } from "../constants";
 
 export function normalizeKgPhoneDigits(input: unknown): string {
   let digits = String(input ?? "").replace(/\D/g, "");
@@ -21,4 +22,20 @@ export const formatKgPhone = (raw?: string) => {
   const groups = digits.match(/.{1,3}/g)?.join(" ") ?? digits;
 
   return `+${groups}`;
+};
+
+export const getLangFromHostPath = (): Locale => {
+  if (typeof window === "undefined") return "ru";
+  const first = window.location.pathname.split("/").filter(Boolean)[0];
+  return first === "kg" ? "kg" : "ru";
+};
+
+export const shouldUseLangApi = (url: string) => {
+  const path = url.split("?")[0];
+  return LANG_WHITELIST_PREFIXES.some((p) => path.startsWith(p));
+};
+
+export const buildLangBaseURL = (baseURL: string, lang: Locale) => {
+  const clean = baseURL.replace(/\/$/, "");
+  return `${clean}/${lang}`;
 };

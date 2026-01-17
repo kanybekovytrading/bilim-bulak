@@ -108,5 +108,17 @@ export const STEPS = [
 ];
 
 export const KG_PREFIX = "996";
+
 export const KG_LOCAL_LEN = 9;
+
 export const KG_TOTAL_LEN = KG_PREFIX.length + KG_LOCAL_LEN;
+
+export const LANG_WHITELIST_PREFIXES = [
+  "/dictionaries/regions",
+  "/dictionaries/organizations",
+  "/dictionaries/organization-types",
+  "/dictionaries/districts",
+  "/user/tests",
+  "/user/profile",
+  "/user/courses",
+];
