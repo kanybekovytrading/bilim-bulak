@@ -1,13 +1,3 @@
-export type TestStatus = "AVAILABLE" | "PAID" | "COMPLETED" | string;
-
-export interface TestItem {
-  id: number;
-  title: string;
-  description: string;
-  timerMinutes: number;
-  price: number;
-  status: TestStatus;
-  questionCount: number;
-}
+import { TestItem } from "@/shared/types";
 
 export type GetTestsResponse = TestItem[];

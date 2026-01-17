@@ -42,3 +42,32 @@ export type Organization = DictionaryItem & {
   districtId: number;
   organizationTypeId: number;
 };
+
+export type TestStatus = "AVAILABLE" | "PAID" | "COMPLETED";
+
+type TestStatusChipColorName = "default" | "accent" | "success";
+
+export interface TestItem {
+  id: number;
+  title: string;
+  description: string;
+  timerMinutes: number;
+  price: number;
+  status: TestStatus;
+  questionCount: number;
+}
+
+export const TEST_STATUS_I18N_KEY: Record<TestStatus, string> = {
+  AVAILABLE: "tests.status.available",
+  PAID: "tests.status.paid",
+  COMPLETED: "tests.status.completed",
+};
+
+export const TEST_STATUS_CHIP_COLOR: Record<
+  TestStatus,
+  TestStatusChipColorName
+> = {
+  AVAILABLE: "default",
+  PAID: "success",
+  COMPLETED: "accent",
+};
