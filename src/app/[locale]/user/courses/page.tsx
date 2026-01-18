@@ -1,4 +1,4 @@
-// app/user/courses/page.tsx (или где у тебя Courses)
+// app/user/courses/page.tsx
 "use client";
 
 import { useMemo } from "react";
@@ -7,6 +7,8 @@ import { Button } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { MoveRight } from "lucide-react";
 import { UserLayout } from "@/widgets/layout/user-layout";
+
+const LESSONS_URL = "https://example.com"; // TODO: поставь реальную ссылку
 
 const Courses = () => {
   const t = useTranslations();
@@ -22,16 +24,19 @@ const Courses = () => {
       subTitle: "Сиздерге сунуш кыла турган маалыматтар үч бөлүктөн турат:",
       items: [
         {
+          key: "meditation",
           title: "Медитация",
           text: "стресстин деңгээлин төмөндөтүүгө жардам берет, ички тынчтыкты жана концентрацияны күчөтөт.",
           action: "Окуу",
         },
         {
+          key: "affirmations",
           title: "Аффирмациялар",
           text: "нерв системасын чындап бекемдейт, иммунитетти күчөтөт жана эмоционалдык туруктуулукту жогорулатат.",
           action: "Окуу",
         },
         {
+          key: "lessons",
           title: "50 сабактан турган теориялык билим",
           text: "бул билим сизге иш жүзүндө бардык көндүмдөрдү колдонууну үйрөтөт.",
           action: "Окуу",
@@ -47,16 +52,19 @@ const Courses = () => {
       subTitle: "Информация представлена в трёх ключевых блоках:",
       items: [
         {
+          key: "meditation",
           title: "Медитация",
           text: "помогает снижать уровень стресса, улучшает концентрацию и внутреннее спокойствие.",
           action: "Читать",
         },
         {
+          key: "affirmations",
           title: "Аффирмации",
           text: "укрепляют нервную систему, повышают иммунитет и эмоциональную устойчивость.",
           action: "Читать",
         },
         {
+          key: "lessons",
           title: "50 теоретических уроков",
           text: "эти знания помогут применять полученные навыки на практике.",
           action: "Читать",
@@ -68,8 +76,21 @@ const Courses = () => {
     return locale === "ru" ? ru : kg;
   }, [locale, t]);
 
-  const goMeditation = () => router.push("/user/courses/meditation");
-  const go = () => router.push("/user/courses/meditation");
+  const onOpen = (key: string) => {
+    if (key === "meditation") {
+      router.push("/user/courses/meditation");
+      return;
+    }
+
+    if (key === "affirmations") {
+      router.push("/user/courses/affirmations");
+      return;
+    }
+
+    if (key === "lessons") {
+      window.open(LESSONS_URL, "_blank", "noopener,noreferrer");
+    }
+  };
 
   return (
     <UserLayout>
@@ -94,7 +115,7 @@ const Courses = () => {
           <div className="mt-4 grid gap-3">
             {content.items.map((item, idx) => (
               <div
-                key={idx}
+                key={item.key}
                 className="bg-white rounded-2xl p-4 md:p-5 border border-indigo-100"
               >
                 <div className="flex items-start gap-3">
@@ -112,7 +133,7 @@ const Courses = () => {
                       </div>
 
                       <Button
-                        onClick={goMeditation}
+                        onClick={() => onOpen(item.key)}
                         className="rounded-xl bg-blue-700 text-white font-medium text-sm md:text-lg h-fit px-4 py-2"
                       >
                         {item.action} <MoveRight size={18} />
@@ -123,6 +144,13 @@ const Courses = () => {
               </div>
             ))}
           </div>
+
+          <>
+            <div className="h-5" />
+            <p className="text-neutral-500 text-sm md:text-xl leading-relaxed">
+              {content.note}
+            </p>
+          </>
         </div>
       </section>
     </UserLayout>
