@@ -8,6 +8,7 @@ import type { TestStartResponse } from "@/entities/user/tests/model/types";
 import { useSubmitTestAnswers } from "@/entities/user/tests/model/api/queries";
 import { TestQuestion } from "../test-question";
 import { toast } from "sonner";
+import { useTestCountdown } from "../../lib/hooks/useTestCountdown";
 
 interface Props {
   test: TestStartResponse;
@@ -25,6 +26,14 @@ export const TestRunner = ({ test, testId }: Props) => {
   const router = useRouter();
 
   const submitMutation = useSubmitTestAnswers();
+
+  const totalSeconds = Math.max(0, (test.timerMinutes ?? 0) * 60);
+
+  const { mmss } = useTestCountdown({
+    testId: test.id ?? testId,
+    totalSeconds,
+    isEnabled: totalSeconds > 0,
+  });
 
   const questions = test.questions;
 
@@ -111,7 +120,7 @@ export const TestRunner = ({ test, testId }: Props) => {
           </p>
 
           <p className="text-2xl md:text-4xl font-semibold text-green-500">
-            44:44
+            {mmss}
           </p>
         </div>
 
