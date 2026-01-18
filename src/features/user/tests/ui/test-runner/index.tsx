@@ -26,6 +26,11 @@ export const TestRunner = ({ test, testId }: Props) => {
   const router = useRouter();
   const submitMutation = useSubmitTestAnswers();
 
+  const selectedRef = useRef<Record<number, number>>({});
+  useEffect(() => {
+    selectedRef.current = selectedByQuestion;
+  }, [selectedByQuestion]);
+
   const questions = test.questions;
   const currentQuestion = questions[currentIndex];
 
@@ -40,7 +45,7 @@ export const TestRunner = ({ test, testId }: Props) => {
 
   const totalSeconds = Math.max(0, (test.timerMinutes ?? 0) * 60);
 
-  const { mmss, clear, isExpired } = useTestCountdown({
+  const { mmss, clear, secondsLeft } = useTestCountdown({
     testId: test.id ?? testId,
     totalSeconds,
     isEnabled: totalSeconds > 0,
@@ -63,16 +68,15 @@ export const TestRunner = ({ test, testId }: Props) => {
 
     submittedRef.current = true;
 
+    const latestSelected = selectedRef.current;
+
     const payload = {
       testId: test.id ?? Number(testId),
-      // startedAt оставляю как есть (ты позже можешь убрать из payload, если бэк не требует)
       startedAt: test.startedAt,
-      answers: Object.entries(selectedByQuestion).map(
-        ([questionId, answerId]) => ({
-          questionId: Number(questionId),
-          answerId,
-        })
-      ),
+      answers: Object.entries(latestSelected).map(([questionId, answerId]) => ({
+        questionId: Number(questionId),
+        answerId,
+      })),
     };
 
     toast.promise(submitMutation.mutateAsync(payload), {
@@ -93,24 +97,24 @@ export const TestRunner = ({ test, testId }: Props) => {
 
   // ✅ таймаут логика
   useEffect(() => {
-    if (!isExpired) return;
+    if (totalSeconds <= 0) return;
+    if (secondsLeft > 0) return; // <-- таймаут наступил только когда 0
     if (submittedRef.current) return;
 
-    const ratio = safeTotal > 0 ? doneCount / safeTotal : 0;
+    const done = Object.keys(selectedRef.current).length;
+    const ratio = safeTotal > 0 ? done / safeTotal : 0;
 
-    console.log(safeTotal, doneCount);
+    console.log("TIMEOUT", { safeTotal, done, ratio });
 
-    // < 30% → просто выходим и чистим
     if (ratio < 0.3) {
-      submittedRef.current = true; // чтобы не дернулось повторно
+      submittedRef.current = true;
       cleanupAndExit();
       return;
     }
 
-    // >= 30% → сабмитим
     submitNow();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isExpired, doneCount, safeTotal]);
+  }, [secondsLeft, totalSeconds, safeTotal]);
 
   const selectAnswer = (answerId: number) => {
     if (!currentQuestion) return;
