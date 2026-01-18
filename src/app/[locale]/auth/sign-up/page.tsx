@@ -21,13 +21,13 @@ const SignUp = () => {
             height={472}
           />
 
-          <h2 className="text-3xl font-semibold mt-10 text-center">
+          {/* <h2 className="text-3xl font-semibold mt-10 text-center">
             {t("signUpPage.welcomeTitle")}
           </h2>
 
           <p className="font-medium text-neutral-500 mt-4 text-center text-balance max-w-181">
             {t("signUpPage.welcomeText")}
-          </p>
+          </p> */}
         </div>
       </div>
     </section>

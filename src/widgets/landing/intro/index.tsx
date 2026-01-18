@@ -8,9 +8,7 @@ import { useAuthStore } from "@/shared/stores/useAuthStore";
 
 export const Intro = () => {
   const router = useRouter();
-
   const t = useTranslations();
-
   const isAuthed = useAuthStore((s) => Boolean(s.token));
 
   const navigateTo = () => router.push(isAuthed ? "/user" : "/auth/sign-in");
@@ -21,13 +19,25 @@ export const Intro = () => {
         {t("intro.titlePart1")} <br /> {t("intro.titlePart2")}
       </h1>
 
-      <p className="text-center text-balance mt-3 text-sm md:text-xl font-medium text-neutral-500">
-        {t("intro.subtitlePart1")}
-        <br className="hidden md:inline-block" /> {t("intro.subtitlePart2")}
-        <span className="text-blue-700"> «Билим Булак» </span>
-        {t("intro.subtitlePart3")} <br className="hidden md:inline-block" />
-        {t("intro.subtitlePart4")}.
-      </p>
+      <div className="mt-3 max-w-300 text-neutral-600 text-sm md:text-xl font-medium leading-relaxed">
+        <p className="text-center text-balance">{t("intro.about.p1")}</p>
+
+        <p className="mt-4 text-center text-balance">{t("intro.about.p2")}</p>
+
+        <ul className="mt-4 text-center grid gap-2 list-disc list-inside">
+          <li>- {t("intro.about.list.testing")}</li>
+          <li>- {t("intro.about.list.stress")}</li>
+          <li>- {t("intro.about.list.recommendations")}</li>
+          <li>- {t("intro.about.list.training")}</li>
+        </ul>
+
+        <div className="mt-5 rounded-2xl text-center bg-indigo-50 px-4 py-3">
+          <p className="font-semibold text-neutral-800">
+            {t("intro.goal.title")}
+          </p>
+          <p className="mt-1 text-neutral-700">{t("intro.goal.text")}</p>
+        </div>
+      </div>
 
       <Button
         onClick={navigateTo}
