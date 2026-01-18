@@ -207,6 +207,15 @@
     "start": "Баштоо",
     "toCourses": "Кошумча билимге"
   },
+  "testsComplete": {
+    "imageAlt": "Тест аяктады",
+    "subtitle": "Тесттин жыйынтыгы",
+    "scoreLabel": "балл",
+    "mentalStateLabel": "Эмоционалдык абал",
+    "recommendationLabel": "Сунуштар",
+    "empty": "—",
+    "toCourses": "Кошумча билимге өтүү"
+  },
   "payment": {
     "paymentLoading": "Төлөм түзүлүүдө…",
     "paymentRedirect": "Төлөмгө өтүп жатабыз…",

@@ -1,19 +1,20 @@
 "use client";
+
 import { useMemo } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
-import { useGetTestResult } from "@/entities/user/tests/model/api/queries";
-import { Button, cn, Spinner } from "@heroui/react";
-import { ErrorBlock } from "@/shared/ui/error-block";
-import { MoveRight } from "lucide-react";
-import { SeverityLevel } from "@/entities/user/tests/model/types";
 import { useTranslations } from "next-intl";
+import { Button, cn, Spinner } from "@heroui/react";
+import { MoveRight } from "lucide-react";
+
+import { useGetTestResult } from "@/entities/user/tests/model/api/queries";
+import { ErrorBlock } from "@/shared/ui/error-block";
+import { SeverityLevel } from "@/entities/user/tests/model/types";
 
 export const CompleteTest = () => {
   const { testId } = useParams<{ testId: string }>();
   const router = useRouter();
-
-  const t = useTranslations();
+  const t = useTranslations("testsComplete"); // namespace
 
   const {
     data: result,
@@ -27,31 +28,29 @@ export const CompleteTest = () => {
 
     const map: Record<SeverityLevel, { color: string }> = {
       low: {
-        color: "#22C55E",
+        color: "#16A34A",
       },
       moderate: {
-        color: "#F59E0B",
+        color: "#D97706",
       },
       high: {
-        color: "#FB923C",
+        color: "#EA580C",
       },
       critical: {
-        color: "#EF4444",
+        color: "#DC2626",
       },
     };
 
     return map[level];
   }, [result?.severityLevel]);
 
-  const goToCourses = () => {
-    router.replace("/user/courses");
-  };
+  const goToCourses = () => router.replace("/user/courses");
 
   return (
     <div className="flex flex-col items-center py-10 px-5">
       <Image
         src="/images/complete.webp"
-        alt="Complete"
+        alt={t("imageAlt")}
         width={200}
         height={200}
       />
@@ -63,36 +62,64 @@ export const CompleteTest = () => {
       ) : isError ? (
         <ErrorBlock refetch={refetch} className="mt-14" />
       ) : (
-        <div style={{ maxWidth: 472 }} className="flex flex-col items-center">
-          <div className="h-5" />
-          <p className="text-blue-700 font-bold text-3xl">
-            Баллы {result?.totalScore}
-          </p>
-          <div className="h-5" />
+        <div style={{ maxWidth: 520 }} className="w-full mt-8">
+          <div className="rounded-2xl border-neutral-200 bg-white p-5 sm:p-6 shadow-sm">
+            <p className="text-center text-sm text-neutral-500">
+              {t("subtitle")}
+            </p>
 
-          <p
-            className="text-center"
-            style={{
-              fontWeight: 700,
-              fontSize: 28,
-              color: ui.color,
-            }}
-          >
-            {result?.categoryDescription}
-          </p>
-          <p>Эмоциональное состояние {result?.mentalState}</p>
-          <p className="text-center text-neutral-500 mt-5">
-            Рекомендации {result?.recommendation}
-          </p>
-          <Button
-            onPress={goToCourses}
-            style={{ marginTop: 20 }}
-            className={cn(
-              "w-full h-fit rounded-xl bg-blue-700 text-white font-medium text-sm lg:text-xl py-3 lg:py-4.5"
-            )}
-          >
-            {t("testsPage.toCourses")} <MoveRight />
-          </Button>
+            <div className="mt-2 text-center">
+              <div className="text-4xl sm:text-5xl font-extrabold tracking-tight text-blue-700">
+                {result?.totalScore ?? 0}
+              </div>
+              <div className="mt-1 text-sm text-neutral-500">
+                {t("scoreLabel")}
+              </div>
+            </div>
+
+            <div className="mt-5 flex justify-center">
+              <span
+                className="text-center"
+                style={{
+                  fontWeight: 700,
+                  fontSize: 20,
+                  color: ui.color,
+                }}
+              >
+                {result?.categoryDescription}
+              </span>
+            </div>
+
+            <div className="mt-5 space-y-3">
+              <div className="rounded-xl bg-neutral-50 p-4">
+                <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+                  {t("mentalStateLabel")}
+                </p>
+                <p className="mt-1 text-base font-semibold text-neutral-900">
+                  {result?.mentalState || t("empty")}
+                </p>
+              </div>
+
+              <div className="rounded-xl bg-neutral-50 p-4">
+                <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+                  {t("recommendationLabel")}
+                </p>
+                <p className="mt-1 text-sm sm:text-base leading-relaxed text-neutral-700">
+                  {result?.recommendation || t("empty")}
+                </p>
+              </div>
+            </div>
+
+            <Button
+              onPress={goToCourses}
+              className={cn(
+                "mt-6 w-full h-fit rounded-xl bg-blue-700 text-white font-medium",
+                "text-sm lg:text-xl py-3 lg:py-4.5"
+              )}
+            >
+              {t("toCourses")} <MoveRight />
+            </Button>
+          </div>
         </div>
       )}
     </div>

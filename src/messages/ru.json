@@ -208,6 +208,15 @@
     "start": "Начать",
     "toCourses": "К знаниям"
   },
+  "testsComplete": {
+    "imageAlt": "Завершение теста",
+    "subtitle": "Результаты теста",
+    "scoreLabel": "баллы",
+    "mentalStateLabel": "Эмоциональное состояние",
+    "recommendationLabel": "Рекомендации",
+    "empty": "—",
+    "toCourses": "Перейти к знаниям"
+  },
   "payment": {
     "paymentLoading": "Создаем оплату…",
     "paymentRedirect": "Переходим к оплате…",
