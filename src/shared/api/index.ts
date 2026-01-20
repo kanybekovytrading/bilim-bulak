@@ -39,7 +39,15 @@ api.interceptors.response.use(
   (error) => {
     const status = error.response.status;
 
-    if (status === 403) {
+    if (!status) return Promise.reject(error);
+
+    const url = error?.config?.url ?? "";
+
+    const skip401For = ["/auth/login"];
+
+    const shouldSkip401 = skip401For.some((p) => url.includes(p));
+
+    if (status === 401 && !shouldSkip401) {
       useAuthStore.getState().logout();
 
       if (typeof window !== "undefined") {
