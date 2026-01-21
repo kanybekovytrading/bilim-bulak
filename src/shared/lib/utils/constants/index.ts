@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
-  "http://localhost:3000";
+export const BASE_API_URL =
+  "https://bilgirim-backend-production-8c49.up.railway.app/api";
+
+const siteUrl = BASE_API_URL.replace(/\/$/, "") ?? "http://localhost:3000";
 
 export const METADATA: Metadata = {
   title: "Bilim Bulak",

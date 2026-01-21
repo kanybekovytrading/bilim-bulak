@@ -5,9 +5,10 @@ import {
   getLangFromHostPath,
   shouldUseLangApi,
 } from "../lib/utils/helpers";
+import { BASE_API_URL } from "../lib/utils/constants";
 
 export const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: BASE_API_URL,
   timeout: 15_000,
 });
 
@@ -22,7 +23,7 @@ api.interceptors.request.use((config) => {
     const isAbsolute = /^https?:\/\//i.test(config.url);
 
     if (!isAbsolute) {
-      const base = process.env.NEXT_PUBLIC_API_URL ?? "";
+      const base = BASE_API_URL;
       const lang = getLangFromHostPath();
 
       config.baseURL = shouldUseLangApi(config.url)
