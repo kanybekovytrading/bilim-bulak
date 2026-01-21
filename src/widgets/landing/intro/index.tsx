@@ -25,10 +25,10 @@ export const Intro = () => {
         <p className="mt-4 text-center text-balance">{t("intro.about.p2")}</p>
 
         <ul className="mt-4 text-center grid gap-2 list-disc list-inside">
-          <li>- {t("intro.about.list.testing")}</li>
+          {/* <li>- {t("intro.about.list.testing")}</li> */}
           <li>- {t("intro.about.list.stress")}</li>
           <li>- {t("intro.about.list.recommendations")}</li>
-          <li>- {t("intro.about.list.training")}</li>
+          {/* <li>- {t("intro.about.list.training")}</li> */}
         </ul>
 
         <div className="mt-5 rounded-2xl text-center bg-indigo-50 px-4 py-3">
