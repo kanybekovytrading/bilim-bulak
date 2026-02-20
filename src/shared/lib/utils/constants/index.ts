@@ -28,11 +28,11 @@ export const METADATA: Metadata = {
   ],
   authors: [
     {
-      name: "Alisher Jumanov",
-      url: "https://www.linkedin.com/in/alisher-jumanov/",
+      name: "Alisher Zhuman",
+      url: "https://www.linkedin.com/in/alisher-zhuman",
     },
   ],
-  creator: "Alisher Jumanov",
+  creator: "Alisher Zhuman",
   publisher: "Bilim Bulak",
   metadataBase: new URL(siteUrl),
   openGraph: {
