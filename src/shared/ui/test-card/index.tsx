@@ -24,19 +24,25 @@ export const TestCard = ({ test }: Props) => {
   const t = useTranslations();
 
   const status = test.status;
+  const isFree = Number(test.price) <= 0;
 
   const isAvailable = status === "AVAILABLE";
   const isPaid = status === "PAID";
   const isCompleted = status === "COMPLETED";
+  const canStart = isPaid || isFree;
 
   const buttonText = isAvailable
-    ? t("testsPage.pay")
+    ? canStart
+      ? t("testsPage.start")
+      : t("testsPage.pay")
     : isPaid
     ? t("testsPage.start")
     : t("testsPage.toCourses");
 
   const buttonStyle = isAvailable
-    ? { backgroundColor: "#1570EF", color: "#fff" }
+    ? canStart
+      ? { backgroundColor: "#22C55E", color: "#fff" }
+      : { backgroundColor: "#1570EF", color: "#fff" }
     : isPaid
     ? { backgroundColor: "#22C55E", color: "#fff" }
     : { backgroundColor: "#EAEDFF", color: "#1570EF" };
@@ -48,13 +54,11 @@ export const TestCard = ({ test }: Props) => {
       return;
     }
 
-    // ✅ PAID: вместо модалки — на confirm
-    if (isPaid) {
+    if (canStart) {
       router.push(`/user/tests/${test.id}/confirm`);
       return;
     }
 
-    // AVAILABLE как было (модалка)
     setIsModalOpen(true);
   };
 
@@ -94,7 +98,11 @@ export const TestCard = ({ test }: Props) => {
           {t("testsPage.priceLabel")}
           <span className="text-xl md:text-2xl text-blue-700">
             {" "}
-            {isAvailable ? t("testsPage.priceValue", { value: test.price }) : "—"}
+            {isCompleted
+              ? "—"
+              : isFree
+                ? t("testsPage.free")
+                : t("testsPage.priceValue", { value: test.price })}
           </span>
         </p>
 
@@ -112,8 +120,7 @@ export const TestCard = ({ test }: Props) => {
         </Button>
       </div>
 
-      {/* ✅ модалка теперь только для AVAILABLE */}
-      {isAvailable && (
+      {isAvailable && !canStart && (
         <TestActionModal
           isOpen={isModalOpen}
           onOpenChange={setIsModalOpen}
