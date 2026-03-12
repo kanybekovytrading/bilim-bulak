@@ -265,7 +265,10 @@
         "text": "После прохождения теста вам откроются материалы.",
         "action": "К тестам"
       }
-    }
+    },
+    "videosCount": "{value} видеоуроков",
+    "openUntil": "Доступно до {date}",
+    "openCourse": "Открыть курс"
   },
   "meditationPage": {
     "content": {
@@ -477,11 +480,6 @@
     "startCta": "Начать",
     "minutes": "{value} мин",
     "questions": "{value} вопросов"
-  },
-  "coursesPage": {
-    "videosCount": "{value} видеоуроков",
-    "openUntil": "Доступно до {date}",
-    "openCourse": "Открыть курс"
   },
   "terms": {
     "title": "Пользовательское соглашение",

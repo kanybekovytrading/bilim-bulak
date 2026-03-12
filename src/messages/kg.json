@@ -264,7 +264,10 @@
         "text": "Тесттен өткөндөн кийин материалдар ачылат.",
         "action": "Тесттерге өтүү"
       }
-    }
+    },
+    "videosCount": "{value} видео сабак",
+    "openUntil": "{date} чейин ачык",
+    "openCourse": "Курсту ачуу"
   },
   "meditationPage": {
     "content": {
@@ -642,12 +645,6 @@
     "minutes": "{value} мүнөт",
     "questions": "{value} суроо"
   },
-  "coursesPage": {
-    "videosCount": "{value} видео сабак",
-    "openUntil": "{date} чейин ачык",
-    "openCourse": "Курсту ачуу"
-  },
-
   "privacy": {
     "title": "Купуялуулук саясаты",
     "meta": "Сайт: bilim-bulak.edu • Оператор: «Академия Билгирим» ОсОО, Бишкек • Байланыш: +996 774 019 942 • Дата: 18.01.2026",
